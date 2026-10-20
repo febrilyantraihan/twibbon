@@ -1020,39 +1020,67 @@
 
                     <canvas id="creator-preview-canvas" width="600" height="600"></canvas>
                     <div class="canvas-checkerboard-bg"></div>
-                    <div class="preview-mode-tag" id="preview-mode-tag">Pratinjau Live 1:1</div>
+                    <div class="creator-drag-hint" id="creator-drag-hint">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="hint-hand-icon"><path d="M18 11V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0"></path><path d="M14 10V4a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v2"></path><path d="M10 10.5V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v8"></path><path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"></path></svg>
+                      <span>Sentuh & geser foto untuk atur wajah</span>
+                    </div>
+                    <div class="preview-mode-tag" id="preview-mode-tag">Feed IG 1:1</div>
                   </div>
                 </div>
 
                 <!-- Tester Supporter Photo Selector -->
                 <div class="creator-tester-selector">
-                  <span class="tester-caption">Uji Foto Wajah Pendukung:</span>
-                  <div class="tester-pills-row">
-                    <button type="button" class="tester-pill active" onclick="setCreatorTesterPhoto('assets/user_santri.jpg', this)">Santri</button>
-                    <button type="button" class="tester-pill" onclick="setCreatorTesterPhoto('assets/user_santriwati.jpg', this)">Santriwati</button>
-                    <button type="button" class="tester-pill" onclick="setCreatorTesterPhoto('assets/user_sains.jpg', this)">Pelajar</button>
-                    <button type="button" class="tester-pill" onclick="setCreatorTesterPhoto('assets/user_alumni.jpg', this)">Formal</button>
-                    <label class="tester-pill tester-upload-btn" title="Unggah foto Anda sendiri untuk pengujian">
-                      <span>+ Foto Uji</span>
+                  <div class="tester-header-row">
+                    <span class="tester-caption">Foto di Dalam Twibbon:</span>
+                    <span class="tester-sub-badge" id="creator-photo-status">Wajah Model</span>
+                  </div>
+
+                  <div class="creator-photo-pick-box">
+                    <!-- Prominent Custom Photo Upload Button -->
+                    <label class="btn-creator-upload-photo" title="Unggah foto Anda sendiri untuk dipakai di twibbon">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="btn-upload-camera-svg"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+                      <span>+ Pilih / Unggah Foto Anda</span>
                       <input type="file" id="tester-custom-input" accept="image/*" class="hidden" onchange="handleCreatorCustomTesterPhoto(this)">
                     </label>
+
+                    <!-- Sample Models Row -->
+                    <div class="tester-presets-row">
+                      <span class="tester-or-label">Atau contoh:</span>
+                      <div class="tester-pills-row">
+                        <button type="button" class="tester-pill active" onclick="setCreatorTesterPhoto('assets/user_santri.jpg', this)">Santri</button>
+                        <button type="button" class="tester-pill" onclick="setCreatorTesterPhoto('assets/user_santriwati.jpg', this)">Santriwati</button>
+                        <button type="button" class="tester-pill" onclick="setCreatorTesterPhoto('assets/user_sains.jpg', this)">Pelajar</button>
+                        <button type="button" class="tester-pill" onclick="setCreatorTesterPhoto('assets/user_alumni.jpg', this)">Formal</button>
+                      </div>
+                    </div>
                   </div>
                 </div>
 
                 <!-- Quick Adjustments Bar -->
                 <div class="creator-controls-strip">
-                  <!-- Scale / Zoom Adjustment -->
+                  <!-- Photo Zoom & Scale Adjustment -->
                   <div class="control-row-item">
                     <div class="control-label-row">
-                      <span class="control-title">Ukuran / Skala Bingkai:</span>
+                      <span class="control-title">Ukuran / Zoom Foto:</span>
                       <span class="control-val-pill" id="creator-scale-val">100%</span>
                     </div>
                     <div class="slider-with-quick-btns">
-                      <button type="button" class="btn-step-zoom" onclick="stepCreatorScale(-5)" title="Perkecil">−</button>
-                      <input type="range" id="creator-scale-slider" min="60" max="140" value="100" step="1" oninput="updateCreatorFrameScale(this.value)">
-                      <button type="button" class="btn-step-zoom" onclick="stepCreatorScale(5)" title="Perbesar">+</button>
-                      <button type="button" class="btn-reset-adjust" onclick="resetCreatorAdjustments()" title="Kembalikan ke Normal">Reset</button>
+                      <button type="button" class="btn-step-zoom" onclick="stepCreatorPhotoZoom(-0.05)" title="Perkecil Foto">−</button>
+                      <input type="range" id="creator-scale-slider" min="40" max="250" value="100" step="1" oninput="setCreatorPhotoZoom(this.value / 100)">
+                      <button type="button" class="btn-step-zoom" onclick="stepCreatorPhotoZoom(0.05)" title="Perbesar Foto">+</button>
                     </div>
+                  </div>
+
+                  <!-- Quick Actions (Rotate & Center/Reset) -->
+                  <div class="creator-actions-row">
+                    <button type="button" class="btn-creator-action" onclick="rotateCreatorPhoto()" title="Putar foto 90 derajat">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="action-btn-svg"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+                      <span>Putar 90°</span>
+                    </button>
+                    <button type="button" class="btn-creator-action btn-action-reset" onclick="resetCreatorPhotoTransform()" title="Kembalikan posisi & zoom foto ke tengah">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="action-btn-svg"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>
+                      <span>Pusatkan Foto</span>
+                    </button>
                   </div>
 
                   <!-- Cutout Lubang Foto Selector -->

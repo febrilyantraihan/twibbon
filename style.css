@@ -3334,17 +3334,138 @@ body.dark-theme .google-acc-pill.selected {
   color: rgba(255, 255, 255, 0.75);
 }
 
-/* Tester Supporter Photo Selector */
+/* Creator Canvas Drag Hint */
+.creator-drag-hint {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  background: rgba(15, 23, 42, 0.84);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  color: #ffffff;
+  font-size: 10.5px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  pointer-events: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  white-space: nowrap;
+}
+
+.creator-drag-hint.hint-hidden {
+  opacity: 0;
+  transform: translateX(-50%) translateY(-6px);
+}
+
+.hint-hand-icon {
+  width: 13px;
+  height: 13px;
+  color: #fbbf24;
+  animation: hintWiggle 1.5s ease-in-out infinite;
+}
+
+@keyframes hintWiggle {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-2px); }
+}
+
+#creator-preview-canvas {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  position: relative;
+  z-index: 2;
+  cursor: grab;
+  touch-action: none;
+}
+
+#creator-preview-canvas.dragging {
+  cursor: grabbing;
+}
+
+/* Tester / Photo Selector */
 .creator-tester-selector {
   margin-bottom: 8px;
 }
 
+.tester-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
 .tester-caption {
-  display: block;
-  font-size: 10.5px;
+  font-size: 11px;
   font-weight: 700;
   color: var(--text-primary);
-  margin-bottom: 4px;
+}
+
+.tester-sub-badge {
+  font-size: 9.5px;
+  font-weight: 700;
+  color: var(--primary-green-dark);
+  background: var(--primary-green-subtle);
+  padding: 1px 6px;
+  border-radius: 10px;
+}
+
+.creator-photo-pick-box {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  background: var(--bg-page);
+  padding: 6px 8px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-color);
+}
+
+.btn-creator-upload-photo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 6px 12px;
+  background: rgba(22, 163, 74, 0.08);
+  color: var(--primary-green-dark);
+  border: 1.5px dashed var(--primary-green);
+  border-radius: var(--radius-sm);
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.btn-creator-upload-photo:hover {
+  background: var(--primary-green);
+  color: #ffffff;
+  border-style: solid;
+  box-shadow: 0 2px 8px rgba(22, 163, 74, 0.3);
+}
+
+.btn-upload-camera-svg {
+  width: 14px;
+  height: 14px;
+}
+
+.tester-presets-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.tester-or-label {
+  font-size: 10px;
+  color: var(--text-secondary);
+  font-weight: 600;
 }
 
 .tester-pills-row {
@@ -3354,11 +3475,11 @@ body.dark-theme .google-acc-pill.selected {
 }
 
 .tester-pill {
-  padding: 3px 8px;
-  font-size: 10.5px;
+  padding: 2.5px 7px;
+  font-size: 10px;
   font-weight: 600;
   border: 1px solid var(--border-color);
-  background: var(--bg-page);
+  background: var(--bg-surface);
   color: var(--text-primary);
   border-radius: var(--radius-pill);
   cursor: pointer;
@@ -3378,10 +3499,45 @@ body.dark-theme .google-acc-pill.selected {
   box-shadow: 0 2px 6px rgba(22, 163, 74, 0.25);
 }
 
-.tester-upload-btn {
-  background: rgba(22, 163, 74, 0.08);
+/* Photo Action Buttons (Rotate & Reset) */
+.creator-actions-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  margin-top: 2px;
+}
+
+.btn-creator-action {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 5px 8px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-color);
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  font-size: 10.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition-fast);
+}
+
+.btn-creator-action:hover {
+  background: var(--primary-green-subtle);
+  border-color: var(--primary-green);
   color: var(--primary-green-dark);
-  border: 1px dashed var(--primary-green);
+}
+
+.btn-creator-action .action-btn-svg {
+  width: 12px;
+  height: 12px;
+}
+
+.btn-action-reset:hover {
+  background: #fef2f2;
+  border-color: #fca5a5;
+  color: #dc2626;
 }
 
 /* Quick Adjustments Strip */

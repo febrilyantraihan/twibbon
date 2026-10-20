@@ -2337,6 +2337,42 @@ let creatorMockupMode = 'square'; // 'square' | 'story'
 let creatorFrameStats = { width: 0, height: 0, fileSizeKb: 0, hasTransparent: false };
 let currentCreatorMobileStep = 1;
 
+// Interactive photo adjustment state inside creator studio
+let creatorPhotoTransform = {
+  x: 0,
+  y: 0,
+  scale: 1.0,
+  rotation: 0
+};
+let isCreatorDragging = false;
+let creatorStartPointer = { x: 0, y: 0 };
+let creatorInitialPinchDist = null;
+let creatorInitialPinchScale = 1.0;
+let creatorGesturesInitialized = false;
+let creatorHintTimer = null;
+
+function showCreatorDragHint() {
+  const hint = document.getElementById('creator-drag-hint');
+  if (!hint) return;
+  hint.classList.remove('hidden');
+  hint.classList.remove('hint-hidden');
+  if (creatorHintTimer) clearTimeout(creatorHintTimer);
+  creatorHintTimer = setTimeout(() => {
+    dismissCreatorDragHint();
+  }, 2800);
+}
+
+function dismissCreatorDragHint() {
+  const hint = document.getElementById('creator-drag-hint');
+  if (!hint || hint.classList.contains('hidden') || hint.classList.contains('hint-hidden')) return;
+  hint.classList.add('hint-hidden');
+  if (creatorHintTimer) clearTimeout(creatorHintTimer);
+  creatorHintTimer = setTimeout(() => {
+    hint.classList.add('hidden');
+    hint.classList.remove('hint-hidden');
+  }, 350);
+}
+
 function setCreatorMobileStep(step) {
   currentCreatorMobileStep = step;
   const colLeft = document.querySelector('.creator-studio-col-left');
@@ -2376,6 +2412,7 @@ function openCreateModal() {
   if (!requireAuth(() => openCreateModal(), 'membuat twibbon baru')) return;
   document.getElementById('create-modal').classList.remove('hidden');
   setCreatorMobileStep(1);
+  setupCreatorCanvasGestures();
 
   // Pre-load default tester photo for instant live preview
   if (!creatorTesterImg) {
@@ -2397,6 +2434,7 @@ function resetCreateForm() {
   uploadedFrameBase64 = null;
   creatorLoadedFrameImg = null;
   creatorFrameScale = 1.0;
+  creatorPhotoTransform = { x: 0, y: 0, scale: 1.0, rotation: 0 };
   creatorCutoutShape = 'auto';
   creatorMockupMode = 'square';
   document.getElementById('dropzone-preview')?.classList.add('hidden');
@@ -2407,6 +2445,9 @@ function resetCreateForm() {
   if (slider) slider.value = 100;
   const valLabel = document.getElementById('creator-scale-val');
   if (valLabel) valLabel.textContent = '100%';
+
+  const photoStatus = document.getElementById('creator-photo-status');
+  if (photoStatus) photoStatus.textContent = 'Wajah Model';
 
   document.querySelectorAll('.cutout-shape-pill').forEach(p => {
     p.classList.toggle('active', p.dataset.shape === 'auto');
@@ -2456,6 +2497,10 @@ function handleFrameFileSelect(input) {
 
       // Check transparency & update stats
       checkImageTransparency(uploadedFrameBase64);
+
+      // Setup gesture handlers on canvas
+      setupCreatorCanvasGestures();
+      showCreatorDragHint();
 
       // Render Live Canvas Preview
       if (!creatorTesterImg) {
@@ -2641,7 +2686,7 @@ function renderCreatorStudioPreview() {
 }
 
 function renderCompositeInsideBox(ctx, x, y, size, sizeH) {
-  // 1. Draw Tester Supporter Photo Underneath
+  // 1. Draw Tester / User Supporter Photo Underneath with interactive position & zoom
   if (creatorTesterImg) {
     ctx.save();
 
@@ -2652,7 +2697,11 @@ function renderCompositeInsideBox(ctx, x, y, size, sizeH) {
       ctx.clip();
     } else if (creatorCutoutShape === 'rounded') {
       ctx.beginPath();
-      ctx.roundRect(x + size * 0.12, y + sizeH * 0.12, size * 0.76, sizeH * 0.76, size * 0.12);
+      if (ctx.roundRect) {
+        ctx.roundRect(x + size * 0.12, y + sizeH * 0.12, size * 0.76, sizeH * 0.76, size * 0.12);
+      } else {
+        ctx.rect(x + size * 0.12, y + sizeH * 0.12, size * 0.76, sizeH * 0.76);
+      }
       ctx.clip();
     } else if (creatorCutoutShape === 'rect') {
       ctx.beginPath();
@@ -2660,38 +2709,120 @@ function renderCompositeInsideBox(ctx, x, y, size, sizeH) {
       ctx.clip();
     }
 
-    // Scale and center tester image
-    const imgRatio = creatorTesterImg.width / creatorTesterImg.height;
-    let dw, dh, dx, dy;
+    // Scale and center base tester image
+    const imgRatio = creatorTesterImg.width / (creatorTesterImg.height || 1);
+    let baseW, baseH;
     if (imgRatio > 1) {
-      dh = sizeH;
-      dw = sizeH * imgRatio;
-      dx = x + (size - dw) / 2;
-      dy = y;
+      baseH = sizeH;
+      baseW = sizeH * imgRatio;
     } else {
-      dw = size;
-      dh = size / imgRatio;
-      dx = x;
-      dy = y + (sizeH - dh) / 2;
+      baseW = size;
+      baseH = size / imgRatio;
     }
-    ctx.drawImage(creatorTesterImg, dx, dy, dw, dh);
+
+    const centerX = x + size / 2;
+    const centerY = y + sizeH / 2;
+
+    // Apply interactive user adjustments (drag/position, rotation, zoom)
+    ctx.translate(centerX + creatorPhotoTransform.x, centerY + creatorPhotoTransform.y);
+    if (creatorPhotoTransform.rotation) {
+      ctx.rotate((creatorPhotoTransform.rotation * Math.PI) / 180);
+    }
+    ctx.scale(creatorPhotoTransform.scale, creatorPhotoTransform.scale);
+
+    ctx.drawImage(creatorTesterImg, -baseW / 2, -baseH / 2, baseW, baseH);
     ctx.restore();
   } else {
     ctx.fillStyle = '#e2e8f0';
     ctx.fillRect(x, y, size, sizeH);
   }
 
-  // 2. Draw Uploaded Frame on top with scale
+  // 2. Draw Uploaded Twibbon Frame on top
   if (creatorLoadedFrameImg) {
     ctx.save();
-    const frameW = size * creatorFrameScale;
-    const frameH = sizeH * creatorFrameScale;
-    const frameX = x + (size - frameW) / 2;
-    const frameY = y + (sizeH - frameH) / 2;
-
-    ctx.drawImage(creatorLoadedFrameImg, frameX, frameY, frameW, frameH);
+    ctx.drawImage(creatorLoadedFrameImg, x, y, size, sizeH);
     ctx.restore();
   }
+}
+
+function setupCreatorCanvasGestures() {
+  const canvas = document.getElementById('creator-preview-canvas');
+  if (!canvas || creatorGesturesInitialized) return;
+  creatorGesturesInitialized = true;
+
+  canvas.style.touchAction = 'none';
+
+  canvas.addEventListener('pointerdown', (e) => {
+    if (!creatorTesterImg) return;
+    dismissCreatorDragHint();
+    isCreatorDragging = true;
+    canvas.classList.add('dragging');
+    creatorStartPointer = { x: e.clientX, y: e.clientY };
+    canvas.setPointerCapture?.(e.pointerId);
+  });
+
+  canvas.addEventListener('pointermove', (e) => {
+    if (!isCreatorDragging || !creatorTesterImg) return;
+    const dx = e.clientX - creatorStartPointer.x;
+    const dy = e.clientY - creatorStartPointer.y;
+
+    const rect = canvas.getBoundingClientRect();
+    const scaleRatio = canvas.width / (rect.width || 1);
+
+    creatorPhotoTransform.x += dx * scaleRatio;
+    creatorPhotoTransform.y += dy * scaleRatio;
+
+    creatorStartPointer = { x: e.clientX, y: e.clientY };
+    renderCreatorStudioPreview();
+  });
+
+  const stopCreatorDrag = (e) => {
+    if (isCreatorDragging) {
+      isCreatorDragging = false;
+      canvas.classList.remove('dragging');
+      if (e && e.pointerId) {
+        try { canvas.releasePointerCapture?.(e.pointerId); } catch (_) {}
+      }
+    }
+  };
+
+  canvas.addEventListener('pointerup', stopCreatorDrag);
+  canvas.addEventListener('pointercancel', stopCreatorDrag);
+
+  // Multi-touch gestures (Pinch-to-zoom)
+  canvas.addEventListener('touchstart', (e) => {
+    if (e.touches.length === 2 && creatorTesterImg) {
+      e.preventDefault();
+      dismissCreatorDragHint();
+      isCreatorDragging = false;
+      creatorInitialPinchDist = getDistanceBetweenTouches(e.touches[0], e.touches[1]);
+      creatorInitialPinchScale = creatorPhotoTransform.scale;
+    }
+  }, { passive: false });
+
+  canvas.addEventListener('touchmove', (e) => {
+    if (e.touches.length === 2 && creatorTesterImg && creatorInitialPinchDist) {
+      e.preventDefault();
+      const currentDist = getDistanceBetweenTouches(e.touches[0], e.touches[1]);
+      const factor = currentDist / creatorInitialPinchDist;
+      setCreatorPhotoZoom(creatorInitialPinchScale * factor);
+    }
+  }, { passive: false });
+
+  canvas.addEventListener('touchend', (e) => {
+    if (e.touches.length < 2) {
+      creatorInitialPinchDist = null;
+    }
+  });
+
+  // Mouse wheel zoom
+  canvas.addEventListener('wheel', (e) => {
+    if (!creatorTesterImg) return;
+    e.preventDefault();
+    dismissCreatorDragHint();
+    const delta = e.deltaY < 0 ? 0.05 : -0.05;
+    setCreatorPhotoZoom((creatorPhotoTransform.scale || 1.0) + delta);
+  }, { passive: false });
 }
 
 function switchMockupView(mode) {
@@ -2729,7 +2860,12 @@ function setCreatorTesterPhoto(src, btnEl) {
   creatorTesterSrc = src;
   document.querySelectorAll('.tester-pill').forEach(p => p.classList.remove('active'));
   if (btnEl) btnEl.classList.add('active');
-  loadCreatorTesterImage(src, () => renderCreatorStudioPreview());
+  const statusEl = document.getElementById('creator-photo-status');
+  if (statusEl) statusEl.textContent = 'Model ' + (btnEl ? btnEl.textContent : 'Contoh');
+  loadCreatorTesterImage(src, () => {
+    resetCreatorPhotoTransform();
+    showCreatorDragHint();
+  });
 }
 
 function handleCreatorCustomTesterPhoto(input) {
@@ -2738,45 +2874,73 @@ function handleCreatorCustomTesterPhoto(input) {
   const reader = new FileReader();
   reader.onload = (e) => {
     document.querySelectorAll('.tester-pill').forEach(p => p.classList.remove('active'));
-    input.closest('.tester-pill')?.classList.add('active');
-    loadCreatorTesterImage(e.target.result, () => renderCreatorStudioPreview());
+    const statusEl = document.getElementById('creator-photo-status');
+    if (statusEl) statusEl.textContent = 'Foto Anda ✓';
+    loadCreatorTesterImage(e.target.result, () => {
+      resetCreatorPhotoTransform();
+      showCreatorDragHint();
+      showToast('🎉 Foto Anda berhasil dimuat! Geser & sesuaikan posisinya di dalam twibbon.', 'success');
+    });
   };
   reader.readAsDataURL(file);
 }
 
-function updateCreatorFrameScale(val) {
-  creatorFrameScale = parseFloat(val) / 100;
+function setCreatorPhotoZoom(val) {
+  const clamped = Math.max(0.4, Math.min(2.5, parseFloat(val) || 1.0));
+  creatorPhotoTransform.scale = clamped;
+
+  const slider = document.getElementById('creator-scale-slider');
   const label = document.getElementById('creator-scale-val');
-  if (label) label.textContent = Math.round(val) + '%';
+  if (slider) slider.value = Math.round(clamped * 100);
+  if (label) label.textContent = Math.round(clamped * 100) + '%';
+
   renderCreatorStudioPreview();
 }
 
-function stepCreatorScale(delta) {
+function stepCreatorPhotoZoom(delta) {
+  const current = creatorPhotoTransform.scale || 1.0;
+  setCreatorPhotoZoom(current + delta);
+}
+
+function rotateCreatorPhoto() {
+  dismissCreatorDragHint();
+  creatorPhotoTransform.rotation = (creatorPhotoTransform.rotation + 90) % 360;
+  renderCreatorStudioPreview();
+  showToast(`Foto diputar ${creatorPhotoTransform.rotation}°`, 'info');
+}
+
+function resetCreatorPhotoTransform() {
+  creatorPhotoTransform = {
+    x: 0,
+    y: 0,
+    scale: 1.0,
+    rotation: 0
+  };
   const slider = document.getElementById('creator-scale-slider');
-  if (!slider) return;
-  let curr = parseInt(slider.value, 10) || 100;
-  curr = Math.max(60, Math.min(140, curr + delta));
-  slider.value = curr;
-  updateCreatorFrameScale(curr);
+  const label = document.getElementById('creator-scale-val');
+  if (slider) slider.value = 100;
+  if (label) label.textContent = '100%';
+  renderCreatorStudioPreview();
+  showToast('Posisi & zoom foto dipusatkan kembali', 'info');
+}
+
+// Backwards compatibility wrappers
+function updateCreatorFrameScale(val) {
+  setCreatorPhotoZoom(parseFloat(val) / 100);
+}
+
+function stepCreatorScale(delta) {
+  stepCreatorPhotoZoom(delta / 100);
+}
+
+function resetCreatorAdjustments() {
+  resetCreatorPhotoTransform();
 }
 
 function setCreatorCutoutShape(shape) {
   creatorCutoutShape = shape;
   document.querySelectorAll('.cutout-shape-pill').forEach(p => {
     p.classList.toggle('active', p.dataset.shape === shape);
-  });
-  renderCreatorStudioPreview();
-}
-
-function resetCreatorAdjustments() {
-  creatorFrameScale = 1.0;
-  creatorCutoutShape = 'auto';
-  const slider = document.getElementById('creator-scale-slider');
-  if (slider) slider.value = 100;
-  const valLabel = document.getElementById('creator-scale-val');
-  if (valLabel) valLabel.textContent = '100%';
-  document.querySelectorAll('.cutout-shape-pill').forEach(p => {
-    p.classList.toggle('active', p.dataset.shape === 'auto');
   });
   renderCreatorStudioPreview();
 }
