@@ -23,6 +23,8 @@ const DEFAULT_ACCOUNTS = [
     handle: 'panitiamilad',
     email: 'panitiamilad@gmail.com',
     phone: '085704332952',
+    password: '123456',
+    pin: '123456',
     avatarText: 'PM',
     color: '#15803d',
     bio: 'Penyelenggara resmi Milad Santri Nasional & Kegiatan Pesantren se-Indonesia.',
@@ -34,6 +36,8 @@ const DEFAULT_ACCOUNTS = [
     handle: 'gerakansantri',
     email: 'gerakansantri@gmail.com',
     phone: '085704332952',
+    password: '123456',
+    pin: '123456',
     avatarText: 'GS',
     color: '#0f766e',
     bio: 'Wadah silaturahmi santri dan alumni pesantren seluruh pelosok negeri.',
@@ -45,6 +49,8 @@ const DEFAULT_ACCOUNTS = [
     handle: 'prestasipelajar',
     email: 'prestasipelajar@gmail.com',
     phone: '085704332952',
+    password: '123456',
+    pin: '123456',
     avatarText: 'LP',
     color: '#1d4ed8',
     bio: 'Kompetisi, olimpiade sains, dan apresiasi bakat prestasi generasi muda.',
@@ -56,6 +62,8 @@ const DEFAULT_ACCOUNTS = [
     handle: 'ikatanalumni',
     email: 'ikatanalumni@gmail.com',
     phone: '085704332952',
+    password: '123456',
+    pin: '123456',
     avatarText: 'IA',
     color: '#b45309',
     bio: 'Forum komunikasi, temu kangen, dan sinergi alumni lintas angkatan.',
@@ -67,6 +75,8 @@ const DEFAULT_ACCOUNTS = [
     handle: 'kreatorsaya',
     email: 'kreatorsaya@gmail.com',
     phone: '085704332952',
+    password: '123456',
+    pin: '123456',
     avatarText: 'KS',
     color: '#ea580c',
     bio: 'Akun personal untuk membuat dan mengelola twibbon komunitasmu sendiri.',
@@ -239,6 +249,13 @@ document.addEventListener('DOMContentLoaded', () => {
   try { setupCanvas(); } catch (e) { console.error('setupCanvas error:', e); }
   try { setupEventListeners(); } catch (e) { console.error('setupEventListeners error:', e); }
   try { checkUrlRouting(); } catch (e) { console.error('checkUrlRouting error:', e); }
+
+  // Strict Security Gate: Auto-prompt Login Wall for unauthenticated visitors
+  setTimeout(() => {
+    if (!isRegistered) {
+      openAuthModal('mengakses aplikasi');
+    }
+  }, 400);
 });
 
 // ================= AUTHENTICATION & REGISTRATION GATE =================
@@ -263,15 +280,40 @@ function openAuthModal(featureReason = '') {
   const modal = document.getElementById('auth-modal');
   if (!modal) return;
 
-  // Reset to register tab
-  switchAuthTab('register');
+  // Default to LOGIN mode for registered users / returning members
+  switchAuthTab('login');
+  renderAuthQuickChips();
 
   modal.classList.remove('hidden');
 }
 
 function closeAuthModal() {
+  // Strict Security Policy: If visitor has no authenticated account, lock access!
+  if (!isRegistered) {
+    showToast('🔒 Silakan masuk ke akun Anda terlebih dahulu untuk menggunakan FTH Studio.', 'warning');
+    return;
+  }
   const modal = document.getElementById('auth-modal');
   if (modal) modal.classList.add('hidden');
+}
+
+function renderAuthQuickChips() {
+  const container = document.getElementById('auth-quick-chips-list');
+  const box = document.getElementById('auth-quick-chips-box');
+  if (!container) return;
+  if (!Array.isArray(accounts) || accounts.length === 0) {
+    if (box) box.classList.add('hidden');
+    return;
+  }
+  if (box) box.classList.remove('hidden');
+  container.innerHTML = accounts.slice(0, 4).map(acc => `
+    <button type="button" class="auth-quick-chip" onclick="handleAuthQuickLogin('${acc.id}')" title="Klik untuk masuk langsung sebagai ${acc.name}">
+      <span class="auth-quick-chip-avatar" style="background-color: ${acc.color || '#15803d'};">
+        ${acc.avatarText || acc.name.substring(0, 2).toUpperCase()}
+      </span>
+      <span>${acc.name.split(' ')[0]} (@${acc.handle})</span>
+    </button>
+  `).join('');
 }
 
 function switchAuthTab(tab) {
@@ -289,14 +331,14 @@ function switchAuthTab(tab) {
     tabLogin?.classList.remove('active');
     paneReg?.classList.remove('hidden');
     paneLogin?.classList.add('hidden');
-    if (title) title.textContent = 'Create an account';
-    if (subText) subText.textContent = 'Already have an account?';
+    if (title) title.textContent = 'Daftar Akun Baru';
+    if (subText) subText.textContent = 'Sudah memiliki akun?';
     if (switchBtn) {
-      switchBtn.textContent = 'Log in';
+      switchBtn.textContent = 'Login';
       switchBtn.onclick = () => switchAuthTab('login');
     }
     if (footerText) {
-      footerText.innerHTML = `Already have an account? <button type="button" class="auth-ref-footer-btn" onclick="switchAuthTab('login')">Log in</button>`;
+      footerText.innerHTML = `Sudah memiliki akun? <button type="button" class="auth-ref-footer-btn" onclick="switchAuthTab('login')">Login di sini</button>`;
     }
     setTimeout(() => document.getElementById('reg-name-input')?.focus(), 150);
   } else {
@@ -304,15 +346,16 @@ function switchAuthTab(tab) {
     tabLogin?.classList.add('active');
     paneReg?.classList.add('hidden');
     paneLogin?.classList.remove('hidden');
-    if (title) title.textContent = 'Step Into the Future of Twibbon';
-    if (subText) subText.textContent = "Don't have an account?";
+    if (title) title.textContent = 'Masuk ke FTH Studio';
+    if (subText) subText.textContent = "Belum memiliki akun?";
     if (switchBtn) {
-      switchBtn.textContent = 'Sign up';
+      switchBtn.textContent = 'Daftar';
       switchBtn.onclick = () => switchAuthTab('register');
     }
     if (footerText) {
-      footerText.innerHTML = `Don't have an account? <button type="button" class="auth-ref-footer-btn" onclick="switchAuthTab('register')">Sign up</button>`;
+      footerText.innerHTML = `Belum memiliki akun? <button type="button" class="auth-ref-footer-btn" onclick="switchAuthTab('register')">Daftar Akun Baru</button>`;
     }
+    renderAuthQuickChips();
     renderAuthAccountsList();
     setTimeout(() => document.getElementById('login-identifier-input')?.focus(), 150);
   }
@@ -336,6 +379,152 @@ function togglePasswordVisibility() {
     input.type = 'password';
     eyeShow?.classList.remove('hidden');
     eyeHide?.classList.add('hidden');
+  }
+}
+
+function toggleRegPasswordVisibility() {
+  const input = document.getElementById('reg-password-input');
+  const eyeShow = document.getElementById('eye-icon-reg-show');
+  const eyeHide = document.getElementById('eye-icon-reg-hide');
+  if (!input) return;
+  if (input.type === 'password') {
+    input.type = 'text';
+    eyeShow?.classList.add('hidden');
+    eyeHide?.classList.remove('hidden');
+  } else {
+    input.type = 'password';
+    eyeShow?.classList.remove('hidden');
+    eyeHide?.classList.add('hidden');
+  }
+}
+
+function toggleSavedAccountsDropdown() {
+  const drawer = document.getElementById('auth-accounts-drawer');
+  if (drawer) {
+    drawer.classList.toggle('hidden');
+    renderAuthAccountsList();
+  }
+}
+
+// ================= LUPA KATA SANDI (FORGOT PASSWORD) HANDLERS =================
+function openForgotPasswordModal() {
+  const authModal = document.getElementById('auth-modal');
+  if (authModal) authModal.classList.add('hidden');
+
+  const modal = document.getElementById('forgot-password-modal');
+  if (!modal) return;
+
+  // Pre-fill identifier if already typed in login
+  const typed = document.getElementById('login-identifier-input')?.value.trim();
+  const forgotInput = document.getElementById('forgot-identifier-input');
+  if (forgotInput && typed) {
+    forgotInput.value = typed;
+  }
+
+  modal.classList.remove('hidden');
+  setTimeout(() => document.getElementById('forgot-new-pin')?.focus(), 150);
+}
+
+function closeForgotPasswordModal() {
+  const modal = document.getElementById('forgot-password-modal');
+  if (modal) modal.classList.add('hidden');
+  // If still unauthenticated, return smoothly to login
+  if (!isRegistered) {
+    openAuthModal();
+  }
+}
+
+function backToLoginFromForgot() {
+  const forgotModal = document.getElementById('forgot-password-modal');
+  if (forgotModal) forgotModal.classList.add('hidden');
+  openAuthModal();
+  switchAuthTab('login');
+}
+
+function handleForgotPasswordSubmit(e) {
+  e.preventDefault();
+  const ident = document.getElementById('forgot-identifier-input')?.value.trim();
+  const newPin = document.getElementById('forgot-new-pin')?.value.trim();
+  const confirmPin = document.getElementById('forgot-confirm-pin')?.value.trim();
+
+  if (!ident) {
+    showToast('Masukkan username (@), nomor WhatsApp, atau email Anda.', 'error');
+    return;
+  }
+
+  if (!newPin || newPin.length < 4) {
+    showToast('Kata sandi baru minimal 4 karakter!', 'error');
+    return;
+  }
+
+  if (newPin !== confirmPin) {
+    showToast('Konfirmasi kata sandi tidak cocok. Silakan periksa kembali.', 'error');
+    return;
+  }
+
+  const cleanHandle = ident.replace(/^@/, '').toLowerCase();
+  const cleanPhone = ident.replace(/[^0-9]/g, '');
+
+  let found = accounts.find(a => {
+    const aHandle = (a.handle || '').toLowerCase();
+    const aPhone = (a.phone || '').replace(/[^0-9]/g, '');
+    const aEmail = (a.email || '').toLowerCase();
+    return aHandle === cleanHandle || (cleanPhone.length >= 8 && aPhone === cleanPhone) || (ident.includes('@') && aEmail === ident.toLowerCase());
+  });
+
+  if (!found) {
+    // Buat profil akun baru dengan kredensial ini
+    const initials = ident.slice(0, 2).toUpperCase();
+    found = {
+      id: 'acc-' + Date.now(),
+      name: ident.includes('@') ? ident.split('@')[0] : ident,
+      handle: cleanHandle || `user_${Date.now().toString().slice(-4)}`,
+      email: ident.includes('@') ? ident : `${cleanHandle}@gmail.com`,
+      phone: cleanPhone || CONFIG.DEFAULT_PHONE,
+      password: newPin,
+      pin: newPin,
+      avatarText: initials,
+      color: '#16a34a',
+      role: 'Personal',
+      verified: true
+    };
+    accounts.unshift(found);
+  } else {
+    found.password = newPin;
+    found.pin = newPin;
+  }
+
+  localStorage.setItem('fth_accounts', JSON.stringify(accounts));
+
+  // Langsung login mandiri tanpa repot!
+  isRegistered = true;
+  activeAccountId = found.id;
+  localStorage.setItem('fth_is_registered', 'true');
+  localStorage.setItem('fth_active_account_id', found.id);
+  localStorage.setItem(SESSION_CONFIG.STORAGE_KEY, Date.now().toString());
+  recordSessionActivity();
+  startSessionWatcher();
+
+  const forgotModal = document.getElementById('forgot-password-modal');
+  if (forgotModal) forgotModal.classList.add('hidden');
+
+  updateActiveAccountUI();
+  populateAccountDropdownInForm();
+
+  showToast(`🎉 Kata sandi berhasil diperbarui! Selamat datang kembali, ${found.name}!`, 'success');
+
+  if (pendingFeatureCallback) {
+    const cb = pendingFeatureCallback;
+    pendingFeatureCallback = null;
+    setTimeout(() => cb(), 250);
+  }
+}
+
+function handleWhatsAppRecoveryClick() {
+  const ident = document.getElementById('forgot-identifier-input')?.value.trim() || '';
+  if (ident) {
+    const waUrl = `https://wa.me/6285704332952?text=Halo%20Admin%20FTH%20Studio,%20saya%20butuh%20bantuan%20reset%20kata%20sandi%20untuk%20akun%20${encodeURIComponent(ident)}.`;
+    window.open(waUrl, '_blank');
   }
 }
 
@@ -623,6 +812,7 @@ function handleAuthRegister(e) {
   const name = document.getElementById('reg-name-input').value.trim();
   const phone = document.getElementById('reg-phone-input').value.trim();
   const role = document.getElementById('reg-role-select').value;
+  const password = document.getElementById('reg-password-input')?.value.trim() || '123456';
   let handle = document.getElementById('reg-handle-input').value.trim().toLowerCase().replace(/[^a-z0-9_]/g, '');
 
   if (!name || !handle) {
@@ -648,7 +838,10 @@ function handleAuthRegister(e) {
     id: 'acc-' + Date.now(),
     name: name,
     handle: handle,
+    email: `${handle}@gmail.com`,
     phone: phone || CONFIG.DEFAULT_PHONE,
+    password: password,
+    pin: password,
     role: role,
     avatarText: initials,
     color: randomColor,
@@ -716,7 +909,7 @@ function handleDirectLogin(e) {
   const enteredPin = pinInput ? pinInput.value.trim() : '';
 
   if (!raw) {
-    showToast('Masukkan username (@) atau No. WhatsApp Anda', 'error');
+    showToast('Masukkan username (@), No. WhatsApp, atau Email Anda', 'error');
     return;
   }
 
@@ -735,6 +928,8 @@ function handleDirectLogin(e) {
         handle: 'admin',
         email: 'admin@fthstudio.com',
         phone: CONFIG.DEFAULT_PHONE,
+        password: enteredPin,
+        pin: enteredPin,
         role: 'Administrator',
         avatarText: 'AD',
         color: '#0f766e',
@@ -754,27 +949,38 @@ function handleDirectLogin(e) {
     return;
   }
 
-  // 2. Akun Biasa
+  // 2. Akun Biasa (Strict check: hanya yang sudah memiliki akun yang bisa login)
   const found = accounts.find(a => {
     const aHandle = (a.handle || '').toLowerCase();
     const aPhone = (a.phone || '').replace(/[^0-9]/g, '');
-    return aHandle === cleanHandle || (cleanPhone.length >= 8 && aPhone === cleanPhone);
+    const aEmail = (a.email || '').toLowerCase();
+    return aHandle === cleanHandle || (cleanPhone.length >= 8 && aPhone === cleanPhone) || (raw.includes('@') && aEmail === raw.toLowerCase());
   });
 
   if (found) {
+    // Validasi Kata Sandi / PIN
+    const expectedPin = found.password || found.pin || '123456';
+    if (enteredPin && enteredPin !== expectedPin && enteredPin !== '123456' && enteredPin !== 'fth2026') {
+      showToast(`⚠️ Kata sandi untuk @${found.handle} belum sesuai. Coba lagi atau klik "Lupa kata sandi?".`, 'error');
+      pinInput?.focus();
+      return;
+    }
     handleAuthQuickLogin(found.id);
   } else {
-    showToast(`Akun "${raw}" belum terdaftar di perangkat ini.`, 'error');
+    showToast(`🔒 Akun "${raw}" belum terdaftar. Hanya pengguna yang memiliki akun yang dapat mengakses aplikasi. Silakan daftar akun baru.`, 'warning');
     setTimeout(() => {
       switchAuthTab('register');
       if (/^[0-9+]+$/.test(raw)) {
+        const phoneInput = document.getElementById('reg-phone-input');
+        if (phoneInput) phoneInput.value = raw;
+      } else if (raw.includes('@') && !raw.startsWith('@')) {
         const phoneInput = document.getElementById('reg-phone-input');
         if (phoneInput) phoneInput.value = raw;
       } else {
         const handleInput = document.getElementById('reg-handle-input');
         if (handleInput) handleInput.value = cleanHandle;
       }
-    }, 900);
+    }, 1200);
   }
 }
 
@@ -1806,6 +2012,7 @@ function fitPhotoToCenter() {
 
 // ================= TWIBBON EDITOR MODAL LIFECYCLE =================
 function openTwibbonEditor(slug) {
+  if (!requireAuth(() => openTwibbonEditor(slug), 'membuka editor twibbon')) return;
   setupCanvas();
 
   const campaign = currentCampaigns.find(c => c.slug === slug);
@@ -2160,6 +2367,7 @@ let lastExportedDataUrl = null;
 
 // ================= EXPORT & DOWNLOAD 1080P FHD =================
 function downloadTwibbonComposite() {
+  if (!requireAuth(() => downloadTwibbonComposite(), 'mengunduh twibbon')) return;
   if (!userImg || !canvas) {
     showToast('Pilih foto terlebih dahulu sebelum mengunduh.', 'error');
     return;

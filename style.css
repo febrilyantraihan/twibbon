@@ -7611,3 +7611,177 @@ body.dark-theme .btn-logout-account {
   }
 }
 
+/* ================= STRICT SECURITY AUTH GATE & FORGOT PASSWORD ================= */
+.auth-security-gate-banner {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  background: rgba(34, 197, 94, 0.08);
+  border: 1px solid rgba(34, 197, 94, 0.28);
+  border-radius: 8px;
+  padding: 8px 12px;
+  margin-bottom: 12px;
+}
+
+.auth-gate-icon {
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+.auth-gate-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.25;
+}
+
+.auth-gate-title {
+  font-size: 11.5px;
+  font-weight: 800;
+  color: var(--primary-green-dark);
+}
+
+.auth-gate-subtitle {
+  font-size: 10px;
+  color: var(--text-secondary);
+}
+
+/* Quick Chips for 1-Tap Login */
+.auth-quick-chips-box {
+  background: var(--bg-page);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 8px 10px;
+  margin-bottom: 12px;
+}
+
+.auth-quick-caption {
+  display: block;
+  font-size: 10.5px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  margin-bottom: 6px;
+}
+
+.auth-quick-chips-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.auth-quick-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 9px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-pill);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-primary);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  user-select: none;
+}
+
+.auth-quick-chip:hover {
+  border-color: var(--primary-green);
+  background: var(--primary-green-subtle);
+  color: var(--primary-green-dark);
+  transform: translateY(-1px);
+}
+
+.auth-quick-chip-avatar {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  color: #ffffff;
+  font-size: 9px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Field Header Row (Label + Forgot Link) */
+.auth-field-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.auth-field-header-row .auth-ref-label {
+  margin-bottom: 0;
+}
+
+.auth-forgot-link {
+  background: none;
+  border: none;
+  color: var(--primary-green);
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 0;
+  transition: color 0.15s ease;
+}
+
+.auth-forgot-link:hover {
+  color: var(--primary-green-dark);
+  text-decoration: underline;
+}
+
+/* Forgot Password Modal */
+.forgot-modal-card {
+  max-width: 440px !important;
+}
+
+.forgot-header {
+  margin-bottom: 14px;
+}
+
+.forgot-icon-wrap {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(34, 197, 94, 0.12);
+  color: var(--primary-green);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 10px;
+}
+
+.key-forgot-svg {
+  width: 22px;
+  height: 22px;
+}
+
+.btn-wa-recovery {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  height: 40px;
+  background-color: #22c55e;
+  color: #ffffff;
+  border-radius: 8px;
+  font-size: 12.5px;
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow: 0 2px 8px rgba(34, 197, 94, 0.28);
+  transition: all 0.18s ease;
+}
+
+.btn-wa-recovery:hover {
+  background-color: #16a34a;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(34, 197, 94, 0.38);
+}
+
+.wa-recovery-svg {
+  width: 16px;
+  height: 16px;
+}
+

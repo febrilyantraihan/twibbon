@@ -1461,41 +1461,114 @@
         </svg>
       </button>
 
+      <!-- Security Gate Badge Banner -->
+      <div class="auth-security-gate-banner" id="auth-security-gate-banner">
+        <span class="auth-gate-icon">🔒</span>
+        <div class="auth-gate-text">
+          <span class="auth-gate-title">Akses Khusus Pengguna Terdaftar</span>
+          <span class="auth-gate-subtitle">Silakan masuk untuk menggunakan aplikasi twibbon</span>
+        </div>
+      </div>
+
       <!-- Centered Header matching reference -->
       <div class="auth-ref-header">
-        <h2 class="auth-ref-title" id="auth-modal-title">Create an account</h2>
+        <h2 class="auth-ref-title" id="auth-modal-title">Step Into the Future of Twibbon</h2>
         <p class="auth-ref-subtitle" id="auth-modal-subtitle-wrap">
-          <span id="auth-modal-subtitle-text">Already have an account?</span>
-          <button type="button" class="auth-ref-switch-link" id="auth-header-switch-btn" onclick="toggleAuthMode()">Log in</button>
+          <span id="auth-modal-subtitle-text">Belum memiliki akun?</span>
+          <button type="button" class="auth-ref-switch-link" id="auth-header-switch-btn" onclick="toggleAuthMode()">Daftar Akun</button>
         </p>
       </div>
 
       <!-- Segmented Pill Switcher (Login / Register) with vibrant lime active state -->
       <div class="auth-ref-switcher-pill">
-        <button type="button" class="auth-ref-tab-btn" id="tab-auth-login" onclick="switchAuthTab('login')">
+        <button type="button" class="auth-ref-tab-btn active" id="tab-auth-login" onclick="switchAuthTab('login')">
           Login
         </button>
-        <button type="button" class="auth-ref-tab-btn active" id="tab-auth-register" onclick="switchAuthTab('register')">
+        <button type="button" class="auth-ref-tab-btn" id="tab-auth-register" onclick="switchAuthTab('register')">
           Register
         </button>
       </div>
 
+      <!-- TAB 2: LOGIN FORM (DEFAULT FOR STRICT SECURITY) -->
+      <div class="auth-tab-pane" id="pane-auth-login">
+        
+        <!-- Quick 1-Tap Saved Account Chips for Zero-Tedium Login -->
+        <div class="auth-quick-chips-box" id="auth-quick-chips-box">
+          <span class="auth-quick-caption">⚡ Masuk Cepat 1-Ketuk Akun Perangkat Ini:</span>
+          <div class="auth-quick-chips-list" id="auth-quick-chips-list">
+            <!-- Rendered dynamically via JS -->
+          </div>
+        </div>
+
+        <form id="form-auth-login-direct" onsubmit="handleDirectLogin(event)">
+          <div class="auth-ref-field">
+            <label class="auth-ref-label" for="login-identifier-input">Username (@) / No. WhatsApp / Email</label>
+            <input type="text" id="login-identifier-input" class="auth-ref-input" placeholder="Contoh: @panitiamilad atau 0812..." required autocomplete="username">
+          </div>
+
+          <div class="auth-ref-field">
+            <div class="auth-field-header-row">
+              <label class="auth-ref-label" for="login-pin-input">Password / Akses PIN</label>
+              <button type="button" class="auth-forgot-link" onclick="openForgotPasswordModal()">Lupa kata sandi?</button>
+            </div>
+            <div class="auth-ref-password-box">
+              <input type="password" id="login-pin-input" class="auth-ref-input password-attached" placeholder="Masukkan kata sandi / PIN" autocomplete="current-password">
+              <button type="button" class="auth-ref-eye-btn" onclick="togglePasswordVisibility()" aria-label="Lihat password">
+                <svg id="eye-icon-show" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8z"></path>
+                  <circle cx="12" cy="12" r="3"></circle>
+                </svg>
+                <svg id="eye-icon-hide" class="hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                  <line x1="1" y1="1" x2="23" y2="23"></line>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- Remember me & Quick Select row matching reference -->
+          <div class="auth-ref-options-row">
+            <label class="auth-ref-checkbox-label">
+              <input type="checkbox" id="auth-remember-me" checked>
+              <span>Ingat Saya (Tetap Masuk)</span>
+            </label>
+            <button type="button" class="auth-ref-link-btn" onclick="toggleSavedAccountsDropdown()">
+              Daftar Semua Akun
+            </button>
+          </div>
+
+          <button type="submit" class="auth-ref-submit-btn btn-login-direct" id="btn-login-direct-submit">
+            Masuk ke Aplikasi &rarr;
+          </button>
+        </form>
+
+        <!-- Saved accounts collapsible drawer -->
+        <div class="auth-accounts-drawer hidden" id="auth-accounts-drawer">
+          <div class="auth-accounts-drawer-header">
+            <span>Pilih akun di perangkat ini:</span>
+          </div>
+          <div class="auth-accounts-list" id="auth-accounts-list">
+            <!-- Rendered dynamically via JS -->
+          </div>
+        </div>
+      </div>
+
       <!-- TAB 1: REGISTER FORM -->
-      <div class="auth-tab-pane" id="pane-auth-register">
+      <div class="auth-tab-pane hidden" id="pane-auth-register">
         <form id="form-auth-register" onsubmit="handleAuthRegister(event)">
           <div class="auth-ref-field">
-            <label class="auth-ref-label" for="reg-name-input">Full Name</label>
+            <label class="auth-ref-label" for="reg-name-input">Full Name / Nama Lengkap *</label>
             <input type="text" id="reg-name-input" class="auth-ref-input" placeholder="Nama Lengkap / Instansi" required autocomplete="name">
           </div>
 
           <div class="auth-ref-field">
-            <label class="auth-ref-label" for="reg-phone-input">Email Address / WhatsApp</label>
+            <label class="auth-ref-label" for="reg-phone-input">No. WhatsApp / Email *</label>
             <input type="tel" id="reg-phone-input" class="auth-ref-input" placeholder="08xxxxxxxxxx" required autocomplete="tel">
           </div>
 
           <div class="auth-ref-field-row">
             <div class="auth-ref-field">
-              <label class="auth-ref-label" for="reg-handle-input">Username (@)</label>
+              <label class="auth-ref-label" for="reg-handle-input">Username (@) *</label>
               <div class="auth-ref-input-prefix-box">
                 <span class="auth-ref-prefix">@</span>
                 <input type="text" id="reg-handle-input" class="auth-ref-input prefix-attached" placeholder="usernameanda" pattern="[a-zA-Z0-9_]+" required>
@@ -1514,30 +1587,16 @@
             </div>
           </div>
 
-          <button type="submit" class="auth-ref-submit-btn" id="btn-auth-submit">
-            Register
-          </button>
-        </form>
-      </div>
-
-      <!-- TAB 2: LOGIN FORM -->
-      <div class="auth-tab-pane hidden" id="pane-auth-login">
-        <form id="form-auth-login-direct" onsubmit="handleDirectLogin(event)">
           <div class="auth-ref-field">
-            <label class="auth-ref-label" for="login-identifier-input">Username (@) / No. WhatsApp</label>
-            <input type="text" id="login-identifier-input" class="auth-ref-input" placeholder="Contoh: @panitiamilad atau 0812..." required autocomplete="username">
-          </div>
-
-          <div class="auth-ref-field">
-            <label class="auth-ref-label" for="login-pin-input">Password / Akses PIN</label>
+            <label class="auth-ref-label" for="reg-password-input">Buat Password / Akses PIN *</label>
             <div class="auth-ref-password-box">
-              <input type="password" id="login-pin-input" class="auth-ref-input password-attached" placeholder="••••••••••••" autocomplete="current-password">
-              <button type="button" class="auth-ref-eye-btn" onclick="togglePasswordVisibility()" aria-label="Lihat password">
-                <svg id="eye-icon-show" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+              <input type="password" id="reg-password-input" class="auth-ref-input password-attached" placeholder="Minimal 4 karakter (misal: 123456)" required autocomplete="new-password">
+              <button type="button" class="auth-ref-eye-btn" onclick="toggleRegPasswordVisibility()" aria-label="Lihat password">
+                <svg id="eye-icon-reg-show" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8z"></path>
                   <circle cx="12" cy="12" r="3"></circle>
                 </svg>
-                <svg id="eye-icon-hide" class="hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <svg id="eye-icon-reg-hide" class="hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                   <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
                   <line x1="1" y1="1" x2="23" y2="23"></line>
                 </svg>
@@ -1545,36 +1604,15 @@
             </div>
           </div>
 
-          <!-- Remember me & Quick Select row matching reference -->
-          <div class="auth-ref-options-row">
-            <label class="auth-ref-checkbox-label">
-              <input type="checkbox" id="auth-remember-me" checked>
-              <span>Remember Me</span>
-            </label>
-            <button type="button" class="auth-ref-link-btn" onclick="toggleSavedAccountsDropdown()">
-              Pilih Akun Tersimpan
-            </button>
-          </div>
-
-          <button type="submit" class="auth-ref-submit-btn btn-login-direct" id="btn-login-direct-submit">
-            Login
+          <button type="submit" class="auth-ref-submit-btn" id="btn-auth-submit">
+            Daftar &amp; Masuk Langsung
           </button>
         </form>
-
-        <!-- Saved accounts collapsible drawer -->
-        <div class="auth-accounts-drawer hidden" id="auth-accounts-drawer">
-          <div class="auth-accounts-drawer-header">
-            <span>Akun di perangkat ini:</span>
-          </div>
-          <div class="auth-accounts-list" id="auth-accounts-list">
-            <!-- Rendered dynamically via JS -->
-          </div>
-        </div>
       </div>
 
       <!-- "Or continue with" Divider matching reference -->
       <div class="auth-ref-divider">
-        <span>Or continue with</span>
+        <span>Atau masuk dengan</span>
       </div>
 
       <!-- Social / Quick login buttons row matching reference -->
@@ -1600,9 +1638,73 @@
 
       <!-- Bottom switch text matching reference -->
       <div class="auth-ref-footer">
-        <span id="auth-ref-footer-text">Don't have an account? <button type="button" class="auth-ref-footer-btn" onclick="switchAuthTab('register')">Sign up</button></span>
+        <span id="auth-ref-footer-text">Belum memiliki akun? <button type="button" class="auth-ref-footer-btn" onclick="switchAuthTab('register')">Daftar Akun Baru</button></span>
       </div>
 
+    </div>
+  </div>
+
+  <!-- ================= MODAL: LUPA KATA SANDI (FORGOT PASSWORD) ================= -->
+  <div class="modal-overlay hidden" id="forgot-password-modal">
+    <div class="modal-card auth-modal-card forgot-modal-card">
+      <button class="auth-ref-close-btn" onclick="closeForgotPasswordModal()" aria-label="Tutup" title="Tutup">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+
+      <div class="auth-ref-header forgot-header">
+        <div class="forgot-icon-wrap">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="key-forgot-svg">
+            <path d="M21 2l-2 2m-1.5 1.5L14 9l-3 3-2-2-7 7v4h4l7-7-2-2 3.5-3.5"></path>
+            <circle cx="16.5" cy="7.5" r="3.5"></circle>
+          </svg>
+        </div>
+        <h2 class="auth-ref-title">Pemulihan Kata Sandi</h2>
+        <p class="auth-ref-subtitle">
+          Pilih cara tercepat untuk memulihkan kata sandi akun Anda.
+        </p>
+      </div>
+
+      <form id="form-forgot-password" onsubmit="handleForgotPasswordSubmit(event)">
+        <div class="auth-ref-field">
+          <label class="auth-ref-label" for="forgot-identifier-input">Username (@) / No. WhatsApp / Email Terdaftar</label>
+          <input type="text" id="forgot-identifier-input" class="auth-ref-input" placeholder="Contoh: @panitiamilad atau 0812..." required autocomplete="username">
+        </div>
+
+        <div class="auth-ref-field">
+          <label class="auth-ref-label" for="forgot-new-pin">Kata Sandi / PIN Baru</label>
+          <input type="password" id="forgot-new-pin" class="auth-ref-input" placeholder="Minimal 4 karakter (misal: 123456)" required>
+        </div>
+
+        <div class="auth-ref-field">
+          <label class="auth-ref-label" for="forgot-confirm-pin">Ulangi Kata Sandi Baru</label>
+          <input type="password" id="forgot-confirm-pin" class="auth-ref-input" placeholder="Ketik ulang kata sandi baru" required>
+        </div>
+
+        <button type="submit" class="auth-ref-submit-btn" id="btn-forgot-submit">
+          Simpan &amp; Masuk ke Akun
+        </button>
+      </form>
+
+      <!-- WhatsApp CS Alternative Route -->
+      <div class="auth-ref-divider">
+        <span>Atau butuh bantuan langsung?</span>
+      </div>
+
+      <a href="https://wa.me/6285704332952?text=Halo%20Admin%20FTH%20Studio,%20saya%20lupa%20kata%20sandi%20akun%20saya.%20Mohon%20bantuan%20reset%20kata%20sandi." target="_blank" rel="noopener" class="btn-wa-recovery" onclick="handleWhatsAppRecoveryClick()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="wa-recovery-svg">
+          <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+        </svg>
+        <span>Bantuan Reset via WhatsApp CS Resmi</span>
+      </a>
+
+      <div class="auth-ref-footer" style="margin-top: 14px;">
+        <button type="button" class="auth-ref-link-btn" onclick="backToLoginFromForgot()">
+          &larr; Kembali ke Halaman Login
+        </button>
+      </div>
     </div>
   </div>
 
