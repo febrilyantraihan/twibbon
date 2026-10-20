@@ -650,29 +650,37 @@
 
     <div class="footer-bottom-bar">
       <div class="footer-container bottom-inner">
-        <!-- Quick Nav: Tidy horizontal bar placed at the bottom for mobile -->
-        <div class="footer-quick-links">
+        <!-- Quick Nav: Tidy modern pill links -->
+        <nav class="footer-quick-links" aria-label="Navigasi Bawah">
           <a href="#" onclick="scrollToCampaigns()">Jelajahi</a>
-          <span class="link-sep">•</span>
           <a href="#" onclick="openCreateModal()">Buat Twibbon</a>
-          <span class="link-sep">•</span>
           <a href="#" onclick="openBgRemoverModal()">Hapus BG</a>
-          <span class="link-sep">•</span>
-          <a href="https://wa.me/6285704332952" target="_blank" rel="noopener" style="color: #22c55e; font-weight: 700;">WA: 0857-0433-2952</a>
-          <span class="link-sep">•</span>
+          <a href="https://wa.me/6285704332952" target="_blank" rel="noopener" class="footer-wa-link" title="Chat WhatsApp CS">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" class="footer-mini-wa-icon"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+            <span>0857-0433-2952</span>
+          </a>
           <a href="#faq">FAQ</a>
-          <span class="link-sep">•</span>
           <a href="admin.html">Admin</a>
-        </div>
-        <div class="footer-meta">
-          <p class="footer-copy">&copy; 2026 <strong>FTH Studio</strong>. Platform Twibbon Modern & Bebas Biaya.</p>
-          <div class="footer-legal">
-            <span>Privasi Terlindungi</span>
-            <span>•</span>
-            <span>100% Bebas Watermark</span>
-            <span>•</span>
-            <span>Kualitas HD 1080p</span>
+        </nav>
+
+        <!-- Compact & Tidy Footer Meta Card (No messy line breaks) -->
+        <div class="footer-meta-card">
+          <div class="footer-trust-badges">
+            <span class="trust-pill">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+              <span>Privasi Aman</span>
+            </span>
+            <span class="trust-pill">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+              <span>Tanpa Watermark</span>
+            </span>
+            <span class="trust-pill">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+              <span>FHD 1080p</span>
+            </span>
           </div>
+
+          <p class="footer-copy">&copy; 2026 <strong>FTH Studio</strong> &bull; Platform Twibbon Serverless Bebas Biaya</p>
         </div>
       </div>
     </div>
