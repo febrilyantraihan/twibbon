@@ -936,6 +936,18 @@
       <div class="modal-body compact-modal-body">
         <form id="create-campaign-form" onsubmit="handleCreateCampaign(event)">
           
+          <!-- Mobile Stepper Tab Bar (Prevents excessive vertical scroll) -->
+          <div class="creator-mobile-nav" id="creator-mobile-nav">
+            <button type="button" class="creator-step-tab active" id="btn-creator-step-1" onclick="setCreatorMobileStep(1)">
+              <span class="step-num-badge">1</span>
+              <span>Desain &amp; Pratinjau</span>
+            </button>
+            <button type="button" class="creator-step-tab" id="btn-creator-step-2" onclick="setCreatorMobileStep(2)">
+              <span class="step-num-badge">2</span>
+              <span>Detail &amp; Rilis</span>
+            </button>
+          </div>
+
           <div class="creator-studio-grid">
             
             <!-- ================= KOLOM KIRI: UPLOAD & STUDIO PENYESUAIAN ================= -->
@@ -1069,6 +1081,14 @@
                     <span class="spec-badge" id="spec-size-badge">⚡ Siap Medsos</span>
                   </div>
                 </div>
+
+                <!-- Mobile Navigation to Step 2 -->
+                <div class="creator-mobile-next-bar">
+                  <button type="button" class="btn-step-next" onclick="setCreatorMobileStep(2)">
+                    <span>Lanjut Isi Info Kampanye</span>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="next-step-icon"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                  </button>
+                </div>
               </div>
             </div>
 
@@ -1193,6 +1213,10 @@
 
               <!-- Submit Button Actions -->
               <div class="form-actions compact-form-actions">
+                <button type="button" class="btn-back-step-mobile" onclick="setCreatorMobileStep(1)" title="Kembali ke Pratinjau Desain">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="back-step-icon"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                  <span>Kembali</span>
+                </button>
                 <button type="button" class="btn-cancel" onclick="closeCreateModal()">Batal</button>
                 <button type="submit" class="btn-submit-campaign" id="btn-submit-campaign">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" class="btn-submit-svg">

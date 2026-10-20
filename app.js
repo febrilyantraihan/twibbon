@@ -2335,10 +2335,47 @@ let creatorFrameScale = 1.0;
 let creatorCutoutShape = 'auto'; // 'auto' | 'circle' | 'rounded' | 'rect'
 let creatorMockupMode = 'square'; // 'square' | 'story'
 let creatorFrameStats = { width: 0, height: 0, fileSizeKb: 0, hasTransparent: false };
+let currentCreatorMobileStep = 1;
+
+function setCreatorMobileStep(step) {
+  currentCreatorMobileStep = step;
+  const colLeft = document.querySelector('.creator-studio-col-left');
+  const colRight = document.querySelector('.creator-studio-col-right');
+  const tab1 = document.getElementById('btn-creator-step-1');
+  const tab2 = document.getElementById('btn-creator-step-2');
+  const modalBody = document.querySelector('.create-modal-card .compact-modal-body');
+
+  if (tab1) tab1.classList.toggle('active', step === 1);
+  if (tab2) tab2.classList.toggle('active', step === 2);
+
+  if (window.innerWidth <= 768) {
+    if (colLeft) colLeft.style.display = step === 1 ? 'block' : 'none';
+    if (colRight) colRight.style.display = step === 2 ? 'block' : 'none';
+  } else {
+    if (colLeft) colLeft.style.display = 'block';
+    if (colRight) colRight.style.display = 'block';
+  }
+
+  if (modalBody) {
+    modalBody.scrollTop = 0;
+  }
+}
+
+window.addEventListener('resize', () => {
+  const colLeft = document.querySelector('.creator-studio-col-left');
+  const colRight = document.querySelector('.creator-studio-col-right');
+  if (window.innerWidth > 768) {
+    if (colLeft) colLeft.style.display = 'block';
+    if (colRight) colRight.style.display = 'block';
+  } else {
+    setCreatorMobileStep(currentCreatorMobileStep);
+  }
+});
 
 function openCreateModal() {
   if (!requireAuth(() => openCreateModal(), 'membuat twibbon baru')) return;
   document.getElementById('create-modal').classList.remove('hidden');
+  setCreatorMobileStep(1);
 
   // Pre-load default tester photo for instant live preview
   if (!creatorTesterImg) {
