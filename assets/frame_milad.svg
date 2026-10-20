@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1080" width="1080" height="1080">
+  <defs>
+    <mask id="center-cutout-milad">
+      <rect width="1080" height="1080" fill="#ffffff"/>
+      <circle cx="540" cy="490" r="375" fill="#000000"/>
+    </mask>
+    <linearGradient id="grad-green-milad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f5132"/>
+      <stop offset="50%" stop-color="#198754"/>
+      <stop offset="100%" stop-color="#146c43"/>
+    </linearGradient>
+    <linearGradient id="grad-gold-milad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffe066"/>
+      <stop offset="50%" stop-color="#fab005"/>
+      <stop offset="100%" stop-color="#f08c00"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Base Decorative Background Layer with Center Hole -->
+  <g mask="url(#center-cutout-milad)">
+    <rect width="1080" height="1080" fill="url(#grad-green-milad)"/>
+    
+    <!-- Islamic Geometric Corners -->
+    <path d="M0,0 L240,0 L200,80 L80,200 L0,240 Z" fill="url(#grad-gold-milad)" opacity="0.35"/>
+    <path d="M1080,0 L840,0 L880,80 L1000,200 L1080,240 Z" fill="url(#grad-gold-milad)" opacity="0.35"/>
+    <path d="M0,1080 L240,1080 L200,1000 L80,880 L0,840 Z" fill="url(#grad-gold-milad)" opacity="0.35"/>
+    <path d="M1080,1080 L840,1080 L880,1000 L1000,880 L1080,840 Z" fill="url(#grad-gold-milad)" opacity="0.35"/>
+
+    <!-- Subtle Arabesque Pattern -->
+    <circle cx="540" cy="490" r="450" fill="none" stroke="url(#grad-gold-milad)" stroke-width="6" opacity="0.4"/>
+    <circle cx="540" cy="490" r="480" fill="none" stroke="#ffffff" stroke-width="2" stroke-dasharray="16,12" opacity="0.3"/>
+  </g>
+
+  <!-- Golden Ring Frame Around Photo -->
+  <circle cx="540" cy="490" r="380" fill="none" stroke="url(#grad-gold-milad)" stroke-width="14"/>
+  <circle cx="540" cy="490" r="392" fill="none" stroke="#ffffff" stroke-width="3" opacity="0.7"/>
+
+  <!-- Top Islamic Dome & Crescent Ornament -->
+  <g transform="translate(540, 75)">
+    <!-- Crescent & Star -->
+    <path d="M-40,-35 A30,30 0 1 0 10,15 A22,22 0 1 1 -25,-25 Z" fill="url(#grad-gold-milad)"/>
+    <polygon points="12,-20 16,-10 26,-8 18,0 20,10 12,4 4,10 6,0 -2,-8 8,-10" fill="url(#grad-gold-milad)"/>
+    
+    <!-- Top Pill Badge -->
+    <rect x="-190" y="24" width="380" height="42" rx="21" fill="#ffffff" filter="drop-shadow(0 4px 10px rgba(0,0,0,0.15))"/>
+    <text x="0" y="52" fill="#0f5132" font-family="'Plus Jakarta Sans', sans-serif" font-size="19" font-weight="800" letter-spacing="1.5" text-anchor="middle">PONDOK PESANTREN SALAF</text>
+  </g>
+
+  <!-- Bottom Ribbons & Campaign Narrative -->
+  <g transform="translate(540, 930)">
+    <!-- Shadow & Banner base -->
+    <path d="M-460,-40 L460,-40 L430,35 L-430,35 Z" fill="#0b3820"/>
+    <rect x="-420" y="-45" width="840" height="74" rx="10" fill="url(#grad-gold-milad)" filter="drop-shadow(0 8px 20px rgba(0,0,0,0.3))"/>
+    <text x="0" y="3" fill="#14532d" font-family="'Plus Jakarta Sans', sans-serif" font-size="34" font-weight="900" letter-spacing="1" text-anchor="middle">MILAD SANTRI &amp; PESANTREN 2026</text>
+    
+    <!-- Sub-banner message -->
+    <rect x="-260" y="38" width="520" height="38" rx="8" fill="#ffffff"/>
+    <text x="0" y="63" fill="#1e293b" font-family="'Plus Jakarta Sans', sans-serif" font-size="16" font-weight="700" text-anchor="middle">Meneladani Akhlak, Mengabdi Untuk Negeri</text>
+  </g>
+</svg>

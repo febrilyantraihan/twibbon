@@ -1,0 +1,1827 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>FTH Studio - Twibbon Gratis Tanpa Watermark</title>
+  <meta name="description" content="Buat Twibbon online gratis tanpa watermark untuk kampanye, acara, sekolah, pesantren, dan media sosial. Download instan kualitas HD 1080p di FTH Studio.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,600;1,700&family=Urbanist:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600;1,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%2316a34a'/><circle cx='16' cy='16' r='9' fill='none' stroke='white' stroke-width='3'/><circle cx='20' cy='12' r='3' fill='%23ff7a30'/></svg>">
+</head>
+<body class="light-theme">
+
+  <!-- ================= TOP MAIN NAVBAR ================= -->
+  <header class="navbar-wrapper" id="navbar">
+    <div class="navbar-container">
+      
+      <!-- Brand Logo -->
+      <a href="index.html" class="navbar-brand" id="brand-logo" title="FTH Studio Twibbon Platform">
+        <div class="brand-icon">
+          <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="32" height="32" rx="9" fill="white"/>
+            <path d="M7 11C7 8.79086 8.79086 7 11 7H21C23.2091 7 25 8.79086 25 11V21C25 23.2091 23.2091 25 21 25H11C8.79086 25 7 23.2091 7 21V11Z" stroke="#16a34a" stroke-width="2.5"/>
+            <circle cx="16" cy="16" r="4.5" fill="#16a34a"/>
+            <circle cx="21" cy="11" r="2.5" fill="#ff7a30"/>
+          </svg>
+        </div>
+        <div class="brand-text">
+          <span class="brand-name">FTH Studio</span>
+          <span class="brand-badge">Twibbon</span>
+        </div>
+      </a>
+
+      <!-- Search Bar -->
+      <div class="search-bar-wrapper">
+        <div class="search-input-box">
+          <input type="text" id="global-search-input" placeholder="Cari Kampanye..." autocomplete="off">
+          <button class="search-icon-btn" id="search-trigger-btn" aria-label="Cari">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Right Actions (Matching Reference Image) -->
+      <div class="navbar-actions">
+        <!-- Explore / Toko Link -->
+        <button class="nav-pill-btn nav-btn-secondary" id="btn-nav-explore" onclick="scrollToCampaigns()">
+          <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+          </svg>
+          <span class="text-desktop-only">Jelajah</span>
+        </button>
+
+        <!-- Mobile Search Trigger Button -->
+        <button class="icon-circle-btn mobile-search-btn" onclick="openExploreModal()" title="Cari Kampanye">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+        </button>
+
+        <!-- Highlight Action: + Buat Twibbonmu -->
+        <button class="nav-pill-btn nav-btn-primary" id="btn-create-twibbon" onclick="openCreateModal()">
+          <span class="btn-plus">+</span>
+          <span class="text-desktop-only">Buat Twibbonmu</span>
+          <span class="text-mobile-only">Buat</span>
+        </button>
+
+        <!-- Telusuri Button -->
+        <button class="nav-pill-btn nav-btn-outline" id="btn-nav-search-modal" onclick="openExploreModal()">
+          <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon>
+          </svg>
+          <span>Telusuri</span>
+        </button>
+
+        <!-- Creator Account Switcher / Auth Button in Navbar -->
+        <button class="nav-account-btn guest-state" id="nav-account-btn" onclick="handleNavAccountClick()" title="Masuk atau Daftar Akun Kreator">
+          <div class="nav-account-avatar guest-avatar" id="nav-account-avatar">
+            <span id="nav-account-avatar-text">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" style="width: 14px; height: 14px;">
+                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+                <circle cx="12" cy="7" r="4"/>
+              </svg>
+            </span>
+          </div>
+          <div class="nav-account-info text-desktop-only">
+            <span class="nav-account-name" id="nav-account-name">Masuk / Daftar</span>
+            <span class="nav-account-handle" id="nav-account-handle">Akun Kreator</span>
+          </div>
+          <svg class="nav-account-chevron text-desktop-only" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <polyline points="6 9 12 15 18 9"></polyline>
+          </svg>
+        </button>
+
+        <!-- Dark/Light Theme Toggle -->
+        <button class="icon-circle-btn" id="theme-toggle-btn" onclick="toggleTheme()" title="Ubah Mode Gelap / Terang">
+          <svg class="theme-icon moon-icon" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+          <svg class="theme-icon sun-icon hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+        </button>
+
+        <!-- Quick Menu Grid Toggle -->
+        <button class="icon-circle-btn" id="menu-grid-btn" onclick="toggleMenuPopup()" title="Menu Cepat">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <rect x="3" y="3" width="7" height="7" rx="1.5"></rect>
+            <rect x="14" y="3" width="7" height="7" rx="1.5"></rect>
+            <rect x="3" y="14" width="7" height="7" rx="1.5"></rect>
+            <rect x="14" y="14" width="7" height="7" rx="1.5"></rect>
+          </svg>
+        </button>
+
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= HERO CONTAINER WITH PROMO STRIP ================= -->
+  <section class="hero-section" id="hero-section">
+    <div class="hero-inner-container">
+
+      <!-- SUB-BANNER / PROMO APP STRIP (Matching Reference Image) -->
+      <div class="sub-banner-card" id="sub-banner">
+        <div class="sub-banner-left">
+          <div class="app-icon-box">
+            <svg viewBox="0 0 28 28" fill="none">
+              <rect width="28" height="28" rx="8" fill="white" fill-opacity="0.2"/>
+              <rect x="4" y="4" width="20" height="20" rx="6" stroke="white" stroke-width="2"/>
+              <circle cx="14" cy="14" r="3.5" fill="white"/>
+            </svg>
+          </div>
+          <div class="app-text-info">
+            <div class="app-title-row">
+              <span class="app-title">FTH Studio Twibbon</span>
+              <span class="app-badge-free">GRATIS</span>
+            </div>
+            <p class="app-subtitle">Cepat, ringan &amp; 100% tanpa watermark</p>
+          </div>
+        </div>
+
+        <div class="sub-banner-center">
+          <span class="sub-pill-tag">• Instant Twibbon</span>
+          <span class="sub-pill-tag">• Resolusi HD 1080p</span>
+          <span class="sub-pill-tag">• Bebas Iklan Komersial</span>
+        </div>
+
+        <div class="sub-banner-right">
+          <button class="btn-sub-action" onclick="scrollToCampaigns()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="btn-sub-icon">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="7 10 12 15 17 10"></polyline>
+              <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+            <div class="btn-sub-text">
+              <span class="btn-sub-label">Jelajahi Twibbon</span>
+              <span class="btn-sub-sub">Siap Pakai</span>
+            </div>
+          </button>
+        </div>
+      </div>
+
+      <!-- MAIN HERO CONTENT (Headline + 3D Mascot Illustration) -->
+      <div class="hero-content-grid">
+        <!-- Left: Headline & Call-To-Action -->
+        <div class="hero-text-content">
+          <h1 class="hero-headline">
+            Twibbon Gratis<br>
+            <span class="highlight-text">Tanpa Watermark!</span>
+          </h1>
+          <p class="hero-description">
+            Buat Twibbon online gratis untuk kampanye, acara, organisasi, dan media sosial. 
+            Pilih atau buat frame foto sendiri, pasang foto dengan mudah, lalu bagikan Twibbon tanpa watermark.
+          </p>
+          <div class="hero-cta-group">
+            <button class="hero-btn-primary" onclick="openCreateModal()">
+              <span class="btn-plus">+</span>
+              <span>Buat Twibbon</span>
+            </button>
+            <button class="hero-btn-secondary" onclick="openBgRemoverModal()">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" class="cta-icon">
+                <circle cx="6" cy="6" r="3"></circle>
+                <circle cx="6" cy="18" r="3"></circle>
+                <line x1="20" y1="4" x2="8.12" y2="15.88"></line>
+                <line x1="14.47" y1="14.48" x2="20" y2="20"></line>
+                <line x1="8.12" y1="8.12" x2="12" y2="12"></line>
+              </svg>
+              <span>Hapus BG</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Right: 3D Mascot Render matching the exact reference -->
+        <div class="hero-mascot-wrapper">
+          <div class="mascot-image-container">
+            <img src="assets/hero_mascots.jpg" alt="Mascot FTH Studio Twibbon" class="hero-mascot-img" id="hero-mascot-img">
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- RUNNING TICKER / MARQUEE BAR (Matching Reference Image) -->
+    <div class="ticker-wrapper" id="ticker-bar">
+      <div class="ticker-track" id="ticker-track">
+        <!-- Items will be duplicated by JS for seamless continuous loop -->
+        <div class="ticker-item">
+          <span class="ticker-bullet">●</span>
+          <span class="ticker-label">Trending:</span>
+          <strong class="ticker-title">MILAD SANTRI 2026</strong>
+          <span class="ticker-pill">12.450+ Pendukung</span>
+        </div>
+        <div class="ticker-item">
+          <span class="ticker-bullet">●</span>
+          <span class="ticker-label">Trending:</span>
+          <strong class="ticker-title">TWIBBON HARI SANTRI NASIONAL</strong>
+          <span class="ticker-pill">24.890+ Pendukung</span>
+        </div>
+        <div class="ticker-item">
+          <span class="ticker-bullet">●</span>
+          <span class="ticker-label">Trending:</span>
+          <strong class="ticker-title">OLIMPIADE SAINS PELAJAR NUSANTARA</strong>
+          <span class="ticker-pill">8.930+ Pendukung</span>
+        </div>
+        <div class="ticker-item">
+          <span class="ticker-bullet">●</span>
+          <span class="ticker-label">Trending:</span>
+          <strong class="ticker-title">REUNI AKBAR ALUMNI 2026</strong>
+          <span class="ticker-pill">5.210+ Pendukung</span>
+        </div>
+        <div class="ticker-item">
+          <span class="ticker-bullet">●</span>
+          <span class="ticker-label">Trending:</span>
+          <strong class="ticker-title">DIES NATALIS KAMPUS MERDEKA</strong>
+          <span class="ticker-pill">16.700+ Pendukung</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= MAIN CONTENT SECTION ================= -->
+  <main class="main-content-wrapper">
+    
+    <!-- UNIFIED POPULAR CAMPAIGNS & CATEGORY SECTION -->
+    <section class="section-container campaigns-section" id="campaigns-grid-section">
+      <div class="section-header-row">
+        <div>
+          <h2 class="section-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" class="section-title-svg">
+              <path d="M12 2c.6 3-1.5 5.5-1.5 8 0 2.2 1.8 4 4 4 1.5 0 2.8-.8 3.5-2 .5 1.2.5 2.8 0 4-1.2 2.8-4 4.5-7 4.5-4.4 0-8-3.6-8-8 0-4.8 4.2-8.5 7-10.5.6.8 1.4 1.5 2 2z"/>
+            </svg>
+            <span>Kampanye Populer</span>
+          </h2>
+          <p class="section-subtitle">Pilih bingkai dan pasang fotomu langsung tanpa watermark</p>
+        </div>
+        <div class="section-actions">
+          <button class="btn-create-inline" onclick="openCreateModal()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="inline-plus-svg">
+              <line x1="12" y1="5" x2="12" y2="19"></line>
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+            <span>Buat Baru</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Category Filter Chips (With Clean Vector SVGs, No Emojis) -->
+      <div class="category-scroll-container">
+        <div class="category-chips-row" id="category-chips">
+          <button class="cat-chip active" data-category="all">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="cat-svg-icon">
+              <rect x="3" y="3" width="7" height="7" rx="1.5"></rect>
+              <rect x="14" y="3" width="7" height="7" rx="1.5"></rect>
+              <rect x="3" y="14" width="7" height="7" rx="1.5"></rect>
+              <rect x="14" y="14" width="7" height="7" rx="1.5"></rect>
+            </svg>
+            <span>Semua</span>
+          </button>
+          <button class="cat-chip" data-category="pesantren">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="cat-svg-icon">
+              <path d="M12 2a4 4 0 0 0-4 4v2H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V10a2 2 0 0 0-2-2h-4V6a4 4 0 0 0-4-4z"></path>
+              <circle cx="12" cy="14" r="2.5"></circle>
+            </svg>
+            <span>Milad &amp; Pesantren</span>
+          </button>
+          <button class="cat-chip" data-category="nasional">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="cat-svg-icon">
+              <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"></path>
+              <line x1="4" y1="22" x2="4" y2="15"></line>
+            </svg>
+            <span>Nasional</span>
+          </button>
+          <button class="cat-chip" data-category="pendidikan">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="cat-svg-icon">
+              <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
+              <path d="M6 12v5c0 2 3 3 6 3s6-1 6-3v-5"></path>
+            </svg>
+            <span>Pendidikan</span>
+          </button>
+          <button class="cat-chip" data-category="organisasi">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="cat-svg-icon">
+              <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+              <circle cx="9" cy="7" r="4"></circle>
+              <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+              <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+            </svg>
+            <span>Organisasi</span>
+          </button>
+          <button class="cat-chip" data-category="lomba">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="cat-svg-icon">
+              <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path>
+              <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path>
+              <path d="M4 22h16"></path>
+              <path d="M10 14.66V17c0 .55-.45 1-1 1H8c-.55 0-1 .45-1 1v1c0 .55.45 1 1 1h8c.55 0 1-.45 1-1v-1c0-.55-.45-1-1-1h-1c-.55 0-1-.45-1-1v-2.34"></path>
+              <path d="M18 4H6v5a6 6 0 0 0 12 0V4z"></path>
+            </svg>
+            <span>Lomba</span>
+          </button>
+          <button class="cat-chip chip-my-campaigns" data-category="my-campaigns" id="chip-my-campaigns" onclick="filterByMyCampaigns()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" class="cat-svg-icon">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+            <span>Kampanye Saya</span>
+            <span class="chip-count-pill" id="my-campaigns-count">0</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Trending Hashtags Strip (Live, Clickable & Synchronized) -->
+      <div class="hashtag-strip-wrapper">
+        <div class="hashtag-strip-label">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="hashtag-fire-icon">
+            <line x1="4" y1="9" x2="20" y2="9"></line>
+            <line x1="4" y1="15" x2="20" y2="15"></line>
+            <line x1="10" y1="3" x2="8" y2="21"></line>
+            <line x1="16" y1="3" x2="14" y2="21"></line>
+          </svg>
+          <span>Tagar Populer:</span>
+        </div>
+        <div class="hashtag-chips-track" id="hashtag-chips-track">
+          <!-- Populated dynamically via app.js -->
+        </div>
+      </div>
+
+      <!-- Active Filter Banner (When filtering by Creator Profile or Hashtag) -->
+      <div class="active-filter-banner hidden" id="active-filter-banner">
+        <div class="filter-banner-content">
+          <span class="filter-banner-badge" id="filter-banner-badge">Akun</span>
+          <span class="filter-banner-text" id="filter-banner-text">Menampilkan kampanye milik: <strong>@gerakansantri</strong></span>
+        </div>
+        <button class="btn-clear-filter" onclick="resetCampaignFilter()" title="Hapus Filter">
+          <span>Semua Kampanye</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+      </div>
+
+      <!-- Campaign Cards Grid Container -->
+      <div class="campaign-grid" id="campaign-cards-container">
+        <!-- Dynamic campaign cards rendered via app.js -->
+      </div>
+    </section>
+
+    <!-- ================= USER-CENTRIC SECTION: 3 LANGKAH MUDAH ================= -->
+    <section class="section-container how-it-works-section" id="how-it-works">
+      <div class="section-header-compact">
+        <h2 class="section-title">
+          <svg class="section-title-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+          </svg>
+          <span>Cara Cepat Pasang Twibbon</span>
+        </h2>
+        <p class="section-subtitle">Hanya 3 langkah praktis langsung dari ponsel Anda tanpa perlu unduh aplikasi tambahan.</p>
+      </div>
+
+      <div class="steps-grid">
+        <div class="step-card">
+          <div class="step-header">
+            <span class="step-number">01</span>
+            <div class="step-icon-box">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                <polyline points="21 15 16 10 5 21"></polyline>
+              </svg>
+            </div>
+          </div>
+          <h3 class="step-title">Pilih Bingkai Favorit</h3>
+          <p class="step-desc">Temukan twibbon sesuai kegiatanmu, mulai dari Milad Pesantren, Hari Santri, Olimpiade Prestasi, hingga Reuni Alumni.</p>
+        </div>
+
+        <div class="step-card">
+          <div class="step-header">
+            <span class="step-number">02</span>
+            <div class="step-icon-box">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="3"></circle>
+                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+              </svg>
+            </div>
+          </div>
+          <h3 class="step-title">Pasang & Atur Foto</h3>
+          <p class="step-desc">Unggah foto terbaikmu, lalu geser, perbesar (pinch zoom), putar, atau berikan filter instan agar pas presisi di dalam bingkai.</p>
+        </div>
+
+        <div class="step-card">
+          <div class="step-header">
+            <span class="step-number">03</span>
+            <div class="step-icon-box">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="7 10 12 15 17 10"></polyline>
+                <line x1="12" y1="15" x2="12" y2="3"></line>
+              </svg>
+            </div>
+          </div>
+          <h3 class="step-title">Unduh HD & Bagikan</h3>
+          <p class="step-desc">Simpan hasil foto berkualitas HD 1080p tanpa watermark! Siap dibagikan ke status WhatsApp, Instagram, dan grup komunitas.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= USER-CENTRIC ADVANTAGES ================= -->
+    <section class="section-container user-benefits-section">
+      <div class="user-benefits-box">
+        <div class="user-benefits-header">
+          <span class="user-benefits-tag">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+            </svg>
+            Kenyamanan Pengguna Diutamakan
+          </span>
+          <h3 class="user-benefits-title">Kenapa Memilih FTH Studio Twibbon?</h3>
+          <p class="user-benefits-desc">
+            Kami menghadirkan pengalaman pasang twibbon yang bersih, bebas gangguan, dan ramah pengguna untuk seluruh keluarga besar sekolah, pesantren, dan komunitas.
+          </p>
+        </div>
+
+        <div class="benefits-grid">
+          <div class="benefit-item">
+            <div class="benefit-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="4.93" y1="4.93" x2="19.07" y2="19.07"></line>
+              </svg>
+            </div>
+            <div class="benefit-info">
+              <h4 class="benefit-name">100% Bebas Watermark</h4>
+              <p class="benefit-text">Hasil unduhan foto sepenuhnya bersih tanpa tulisan promosi, logo aplikasi mengganggu, maupun watermark.</p>
+            </div>
+          </div>
+
+          <div class="benefit-item">
+            <div class="benefit-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+              </svg>
+            </div>
+            <div class="benefit-info">
+              <h4 class="benefit-name">Resolusi Tinggi 1080p HD</h4>
+              <p class="benefit-text">Gambar tajam dan jernih, tidak pecah atau buram saat dijadikan foto profil WhatsApp atau dicetak.</p>
+            </div>
+          </div>
+
+          <div class="benefit-item">
+            <div class="benefit-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+              </svg>
+            </div>
+            <div class="benefit-info">
+              <h4 class="benefit-name">Cepat &lt; 3 Detik di HP</h4>
+              <p class="benefit-text">Foto diproses instan langsung di perangkat smartphone Anda tanpa antri server atau loading berkepanjangan.</p>
+            </div>
+          </div>
+
+          <div class="benefit-item">
+            <div class="benefit-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+              </svg>
+            </div>
+            <div class="benefit-info">
+              <h4 class="benefit-name">Privasi Foto 100% Aman</h4>
+              <p class="benefit-text">Foto pribadi Anda tidak pernah disimpan ke server kami. Seluruh proses pengeditan terlindungi di browser Anda.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= CTA BANNER: BUAT KAMPANYE SENDIRI ================= -->
+    <section class="section-container cta-community-section">
+      <div class="cta-community-box">
+        <div class="cta-content">
+          <span class="cta-badge">Untuk Panitia & Kreator</span>
+          <h3 class="cta-title">Ingin Buat Bingkai Twibbon untuk Komunitasmu?</h3>
+          <p class="cta-desc">
+            Buat kampanye acaramu sendiri secara gratis. Siapkan bingkai PNG transparan, beri judul kegiatan, dan dapatkan tautan unik yang langsung siap disebarkan ke anggota!
+          </p>
+          <div class="cta-actions">
+            <button class="btn-cta-primary" onclick="openCreateModal()">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+              </svg>
+              <span>Buat Twibbon Sekarang</span>
+            </button>
+            <button class="btn-cta-secondary" onclick="openBgRemoverModal()">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="6" cy="6" r="3"></circle>
+                <circle cx="6" cy="18" r="3"></circle>
+                <line x1="20" y1="4" x2="8.12" y2="15.88"></line>
+                <line x1="14.47" y1="14.48" x2="20" y2="20"></line>
+                <line x1="8.12" y1="8.12" x2="12" y2="12"></line>
+              </svg>
+              <span>Hapus Background Foto</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= FAQ SECTION: PERTANYAAN POPULER ================= -->
+    <section class="section-container faq-section" id="faq">
+      <div class="section-header-compact">
+        <h2 class="section-title">
+          <svg class="section-title-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <circle cx="12" cy="12" r="10"></circle>
+            <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+            <line x1="12" y1="17" x2="12.01" y2="17"></line>
+          </svg>
+          <span>Pertanyaan yang Sering Diajukan</span>
+        </h2>
+        <p class="section-subtitle">Jawaban cepat untuk membantu Anda menggunakan FTH Studio dengan mudah.</p>
+      </div>
+
+      <div class="faq-list">
+        <details class="faq-item" open>
+          <summary class="faq-question">
+            <span>Apakah FTH Studio benar-benar gratis digunakan?</span>
+            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </summary>
+          <div class="faq-answer">
+            <p>Ya, 100% gratis selamanya! Anda bisa memasang foto ke twibbon ataupun membuat kampanye twibbon baru tanpa dipungut biaya apapun, tanpa langganan, dan tanpa iklan pop-up yang mengganggu.</p>
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary class="faq-question">
+            <span>Apakah foto yang saya pasang aman?</span>
+            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </summary>
+          <div class="faq-answer">
+            <p>Sangat aman. Teknologi FTH Studio memproses penggabungan foto langsung di browser HP Anda (Client-Side). Foto pribadi Anda tidak pernah dikirim, disimpan, ataupun diunggah ke server luar.</p>
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary class="faq-question">
+            <span>Bagaimana cara membagikan Twibbon ke WhatsApp atau media sosial?</span>
+            <svg class="faq-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <polyline points="6 9 12 15 18 9"></polyline>
+            </svg>
+          </summary>
+          <div class="faq-answer">
+            <p>Cukup tekan ikon rantai/tautan di kartu kampanye yang Anda inginkan. Tautan akan otomatis tersalin ke papan klip ponsel Anda dan siap ditempelkan di chat WhatsApp, bio Instagram, ataupun Facebook.</p>
+          </div>
+        </details>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="footer-wrapper">
+    <div class="footer-container">
+      <div class="footer-brand-col">
+        <div class="footer-brand">
+          <div class="brand-icon-sm">
+            <svg viewBox="0 0 32 32" fill="none">
+              <rect width="32" height="32" rx="9" fill="#16a34a"/>
+              <circle cx="16" cy="16" r="5" fill="white"/>
+            </svg>
+          </div>
+          <span class="footer-brand-name">FTH Studio Twibbon</span>
+        </div>
+        <p class="footer-tagline">
+          Platform kampanye twibbon modern, mandiri, dan bebas biaya untuk sekolah, pesantren, organisasi, dan komunitas independen.
+        </p>
+      </div>
+
+      <div class="footer-links-col">
+        <h4 class="footer-col-title">Navigasi</h4>
+        <ul class="footer-links">
+          <li><a href="#" onclick="scrollToCampaigns()">Jelajahi Twibbon</a></li>
+          <li><a href="#" onclick="openCreateModal()">Buat Twibbon Sendiri</a></li>
+          <li><a href="#" onclick="openBgRemoverModal()">Remove Background (AI)</a></li>
+          <li><a href="admin.html">Dashboard Admin / Kreator</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-links-col">
+        <h4 class="footer-col-title">Kategori Twibbon</h4>
+        <ul class="footer-links">
+          <li><a href="#" onclick="filterCategory('pesantren')">Milad & Pesantren</a></li>
+          <li><a href="#" onclick="filterCategory('nasional')">Hari Besar Nasional</a></li>
+          <li><a href="#" onclick="filterCategory('lomba')">Olimpiade & Lomba</a></li>
+          <li><a href="#" onclick="filterCategory('organisasi')">Organisasi & Alumni</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-links-col footer-contact-col">
+        <h4 class="footer-col-title">Kontak &amp; Bantuan</h4>
+        <ul class="footer-links">
+          <li>
+            <a href="https://wa.me/6285704332952?text=Halo%20FTH%20Studio,%20saya%20ingin%20bertanya%20seputar%20twibbon" target="_blank" rel="noopener" class="footer-wa-link-btn" title="Chat WhatsApp CS">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" class="wa-icon-svg"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+              <strong>0857-0433-2952</strong>
+            </a>
+          </li>
+          <li><span class="footer-contact-note">Layanan WhatsApp CS &amp; Admin</span></li>
+          <li><a href="https://wa.me/6285704332952?text=Halo%20FTH%20Studio,%20saya%20butuh%20bantuan%20desain%20bingkai%20twibbon" target="_blank" rel="noopener">Bantuan Desain Frame PNG</a></li>
+          <li><a href="https://wa.me/6285704332952?text=Halo%20FTH%20Studio,%20saya%20ingin%20verifikasi%20akun%20organisasi" target="_blank" rel="noopener">Verifikasi Akun Organisasi</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom-bar">
+      <div class="footer-container bottom-inner">
+        <!-- Quick Nav: Tidy horizontal bar placed at the bottom for mobile -->
+        <div class="footer-quick-links">
+          <a href="#" onclick="scrollToCampaigns()">Jelajahi</a>
+          <span class="link-sep">•</span>
+          <a href="#" onclick="openCreateModal()">Buat Twibbon</a>
+          <span class="link-sep">•</span>
+          <a href="#" onclick="openBgRemoverModal()">Hapus BG</a>
+          <span class="link-sep">•</span>
+          <a href="https://wa.me/6285704332952" target="_blank" rel="noopener" style="color: #22c55e; font-weight: 700;">WA: 0857-0433-2952</a>
+          <span class="link-sep">•</span>
+          <a href="#faq">FAQ</a>
+          <span class="link-sep">•</span>
+          <a href="admin.html">Admin</a>
+        </div>
+        <div class="footer-meta">
+          <p class="footer-copy">&copy; 2026 <strong>FTH Studio</strong>. Platform Twibbon Modern & Bebas Biaya.</p>
+          <div class="footer-legal">
+            <span>Privasi Terlindungi</span>
+            <span>•</span>
+            <span>100% Bebas Watermark</span>
+            <span>•</span>
+            <span>Kualitas HD 1080p</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ================= MODAL: LIVE TWIBBON CANVAS EDITOR ================= -->
+  <div class="modal-overlay hidden" id="editor-modal">
+    <div class="modal-card editor-modal-card">
+      
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <div class="modal-header-left">
+          <h3 class="modal-title" id="editor-campaign-title">Pasang Twibbon</h3>
+          <span class="modal-subtitle" id="editor-campaign-creator">Oleh FTH Studio</span>
+        </div>
+        <button class="modal-close-btn" onclick="closeEditorModal()" aria-label="Tutup Editor">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Modal Body (Canvas Viewport + Controls) -->
+      <div class="modal-body editor-modal-body">
+        
+        <!-- Interactive Canvas Stage -->
+        <div class="canvas-stage-wrapper">
+          <div class="canvas-stage" id="canvas-stage">
+            <!-- Checkerboard background for transparency preview -->
+            <div class="canvas-checkerboard"></div>
+            
+            <!-- Real HTML5 Canvas for composite rendering -->
+            <canvas id="twibbon-canvas" width="1080" height="1080"></canvas>
+
+            <!-- Loading overlay inside canvas stage -->
+            <div class="canvas-loader hidden" id="canvas-loader">
+              <div class="spinner"></div>
+              <span>Memproses Foto...</span>
+            </div>
+
+            <!-- Empty Photo Placeholder when no photo is uploaded -->
+            <div class="canvas-empty-state" id="canvas-empty-state" onclick="triggerPhotoUpload()" style="cursor: pointer;">
+              <div class="empty-icon-circle">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                  <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+                  <circle cx="12" cy="13" r="4"></circle>
+                </svg>
+              </div>
+              <p class="empty-text">Sentuh atau klik di sini untuk memilih fotomu</p>
+              <button type="button" class="btn-select-photo-main" onclick="triggerPhotoUpload(); event.stopPropagation();">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="btn-icon">
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                  <polyline points="17 8 12 3 7 8"></polyline>
+                  <line x1="12" y1="3" x2="12" y2="15"></line>
+                </svg>
+                <span>Pilih Foto Saya</span>
+              </button>
+            </div>
+
+            <!-- Hint overlay for mobile drag gestures (subtle floating pill) -->
+            <div class="gesture-hint hidden" id="gesture-hint">
+              <svg viewBox="0 0 24 24" width="13" height="13" style="width: 13px; height: 13px; min-width: 13px; max-width: 13px; flex-shrink: 0;" fill="none" stroke="currentColor" stroke-width="2" class="hint-svg-icon">
+                <path d="M18 11V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0"></path>
+                <path d="M14 10V4a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v2"></path>
+                <path d="M10 10.5V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v8"></path>
+                <path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"></path>
+              </svg>
+              <span>Geser foto untuk menyesuaikan</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Safe File Input for supporter's photo (accessible to all mobile browsers) -->
+        <input type="file" id="user-photo-input" accept="image/*" class="editor-file-input-hidden">
+
+        <!-- Streamlined Controls Toolbar (Zoom & Tools) -->
+        <div class="editor-controls-panel" id="editor-controls">
+          
+          <!-- Opaque Frame Warning & Quick Action Banner (Shows when frame has no transparent hole) -->
+          <div class="opaque-frame-notice hidden" id="opaque-frame-notice">
+            <div class="notice-text">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" class="notice-svg"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+              <span>Bingkai padat. Pilih mode posisi foto:</span>
+            </div>
+            <div class="notice-actions">
+              <button type="button" class="btn-notice-action" id="btn-notice-layer" onclick="toggleLayerOrder()">Foto di Depan</button>
+              <button type="button" class="btn-notice-action" id="btn-notice-cutout" onclick="cycleCutoutShape()">Lubang Foto</button>
+            </div>
+          </div>
+
+          <!-- Photo Detection Status Card -->
+          <div class="photo-detection-card" id="photo-detection-card">
+            <div class="detection-left">
+              <div class="detection-avatar-box" onclick="triggerPhotoUpload()" title="Klik untuk ganti foto">
+                <img id="detected-photo-thumb" src="" alt="Thumbnail Foto" class="detection-thumb hidden">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="detection-placeholder-svg" id="detection-placeholder-svg">
+                  <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path>
+                  <circle cx="12" cy="13" r="4"></circle>
+                </svg>
+              </div>
+              <div class="detection-text-wrap">
+                <div class="detection-status-row">
+                  <span class="detection-title" id="detection-title">Foto Terdeteksi ✓</span>
+                  <span class="detection-badge-pill verified" id="detection-badge-pill">Aktif</span>
+                </div>
+                <span class="detection-desc" id="detection-desc">Foto siap disesuaikan (geser &amp; zoom)</span>
+              </div>
+            </div>
+            <button type="button" class="btn-detect-action" onclick="triggerPhotoUpload()" id="btn-detect-action">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="detect-btn-svg">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="17 8 12 3 7 8"></polyline>
+                <line x1="12" y1="3" x2="12" y2="15"></line>
+              </svg>
+              <span id="btn-detect-action-text">Ganti Foto</span>
+            </button>
+          </div>
+
+          <!-- Sample Photo Quick-Picks Row -->
+          <div class="sample-picks-row" id="sample-picks-row">
+            <span class="sample-picks-label">Model Cepat:</span>
+            <button type="button" class="sample-pick-btn" onclick="loadSamplePhoto('assets/user_santri.jpg')">Santri</button>
+            <button type="button" class="sample-pick-btn" onclick="loadSamplePhoto('assets/user_santriwati.jpg')">Santriwati</button>
+            <button type="button" class="sample-pick-btn" onclick="loadSamplePhoto('assets/user_alumni.jpg')">Alumni</button>
+            <button type="button" class="sample-pick-btn" onclick="loadSamplePhoto('assets/user_sains.jpg')">Pelajar</button>
+          </div>
+
+          <!-- Zoom Slider Row with Quick Steppers -->
+          <div class="control-row zoom-row">
+            <span class="control-label">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="mini-icon">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                <line x1="8" y1="11" x2="14" y2="11"></line>
+              </svg>
+              Zoom
+            </span>
+            <button type="button" class="btn-zoom-step" onclick="stepZoom(-0.1)" title="Perkecil">−</button>
+            <input type="range" id="zoom-slider" min="0.2" max="3.5" step="0.02" value="1" class="zoom-range" oninput="setZoom(parseFloat(this.value))">
+            <button type="button" class="btn-zoom-step" onclick="stepZoom(0.1)" title="Perbesar">+</button>
+            <span class="zoom-val-text" id="zoom-val-text">100%</span>
+          </div>
+
+          <!-- Quick Action Buttons Grid (5 Focused Studio Tools) -->
+          <div class="control-buttons-row">
+            <!-- Rotate 90 deg -->
+            <button type="button" class="tool-btn" onclick="rotatePhoto()" title="Putar 90 Derajat">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
+              </svg>
+              <span>Putar 90°</span>
+            </button>
+
+            <!-- Flip Horizontal -->
+            <button type="button" class="tool-btn" onclick="flipPhoto()" title="Cermin / Flip Horizontal">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M8 3H5a2 2 0 0 0-2 2v14c0 1.1.9 2 2 2h3m8-18h3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-3M12 2v20"/>
+              </svg>
+              <span>Cermin</span>
+            </button>
+
+            <!-- Layer Order Toggle -->
+            <button type="button" class="tool-btn" id="btn-layer-order" onclick="toggleLayerOrder()" title="Ubah Posisi Lapisan Foto &amp; Bingkai">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                <polyline points="2 17 12 22 22 17"></polyline>
+                <polyline points="2 12 12 17 22 12"></polyline>
+              </svg>
+              <span id="layer-order-text">Lapisan</span>
+            </button>
+
+            <!-- Cutout Hole Shape Toggle (Circle / Square / None) -->
+            <button type="button" class="tool-btn" id="btn-cutout-hole" onclick="cycleCutoutShape()" title="Buat Lubang Foto pada Bingkai">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="9"></circle>
+                <circle cx="12" cy="12" r="3.5"></circle>
+              </svg>
+              <span id="cutout-shape-text">Lubang</span>
+            </button>
+
+            <!-- Reset Fit -->
+            <button type="button" class="tool-btn" onclick="resetPhotoTransform()" title="Posisikan Tengah / Pas">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="1 4 1 10 7 10"></polyline>
+                <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+              </svg>
+              <span>Reset</span>
+            </button>
+          </div>
+
+          <!-- Color Filters Compact Row -->
+          <div class="filter-chips-row compact-filter-row">
+            <span class="filter-label">Filter:</span>
+            <button type="button" class="filter-chip active" onclick="applyPhotoFilter('none')">Asli</button>
+            <button type="button" class="filter-chip" onclick="applyPhotoFilter('bright')">Cerah</button>
+            <button type="button" class="filter-chip" onclick="applyPhotoFilter('warm')">Warm</button>
+            <button type="button" class="filter-chip" onclick="applyPhotoFilter('vibrant')">Vibrant</button>
+            <button type="button" class="filter-chip" onclick="applyPhotoFilter('bw')">B&amp;W</button>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- Modal Footer (Download + Share Caption Action) -->
+      <div class="modal-footer editor-modal-footer">
+        <button type="button" class="btn-download-twibbon" id="btn-download-action" onclick="downloadTwibbonComposite()" disabled>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="btn-icon">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="7 10 12 15 17 10"></polyline>
+            <line x1="12" y1="15" x2="12" y2="3"></line>
+          </svg>
+          <span id="btn-download-text">Unduh Twibbon (FHD 1080p)</span>
+        </button>
+        <button type="button" class="btn-copy-caption-secondary" onclick="copyCampaignCaptionAndTags()" title="Salin deskripsi &amp; tagar kampanye untuk dibagikan ke WhatsApp / IG / TikTok">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="mini-copy-icon">
+            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+          </svg>
+          <span>Salin Caption &amp; Tagar</span>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ================= MODAL: BUAT TWIBBONMU (+ Creator Studio) ================= -->
+  <!-- ================= MODAL: BUAT TWIBBONMU (+ Creator Studio & Social Media Preview) ================= -->
+  <div class="modal-overlay hidden" id="create-modal">
+    <div class="modal-card create-modal-card">
+      <div class="modal-header compact-modal-header">
+        <div class="creator-header-left">
+          <div class="creator-header-icon-box">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" class="creator-header-icon">
+              <path d="M12 20h9"></path>
+              <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+            </svg>
+          </div>
+          <div>
+            <h3 class="modal-title">Studio Kampanye &amp; Penyesuaian</h3>
+            <span class="modal-subtitle">Upload &amp; sesuaikan bingkai twibbon sebelum rilis ke media sosial</span>
+          </div>
+        </div>
+        <button class="modal-close-btn" onclick="closeCreateModal()" aria-label="Tutup">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+
+      <div class="modal-body compact-modal-body">
+        <form id="create-campaign-form" onsubmit="handleCreateCampaign(event)">
+          
+          <div class="creator-studio-grid">
+            
+            <!-- ================= KOLOM KIRI: UPLOAD & STUDIO PENYESUAIAN ================= -->
+            <div class="creator-studio-col-left">
+              <!-- Compact Frame File Upload Banner -->
+              <div class="form-group form-group-compact">
+                <div class="dropzone-box compact-dropzone" id="frame-dropzone" onclick="document.getElementById('frame-file-input').click()">
+                  <div class="compact-dropzone-inner" id="dropzone-prompt">
+                    <div class="compact-dropzone-left">
+                      <div class="compact-dropzone-icon-wrap">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="compact-dropzone-icon">
+                          <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                          <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                          <polyline points="21 15 16 10 5 21"></polyline>
+                        </svg>
+                      </div>
+                      <div class="compact-dropzone-info">
+                        <span class="compact-dropzone-title">Pilih Template Bingkai PNG *</span>
+                        <span class="compact-dropzone-sub">Wajib PNG transparan 1:1 • Maks. 2.5 MB</span>
+                      </div>
+                    </div>
+                    <span class="btn-choose-file-pill">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="pill-upload-svg"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                      Pilih File
+                    </span>
+                  </div>
+
+                  <!-- Preview Bar when image chosen -->
+                  <div class="compact-dropzone-preview hidden" id="dropzone-preview">
+                    <img src="" id="frame-preview-img" alt="Preview Frame">
+                    <div class="compact-preview-right">
+                      <div class="transparency-status" id="transparency-status">
+                        <span class="status-indicator"></span>
+                        <span class="status-text">Memeriksa...</span>
+                      </div>
+                      <span class="compact-change-text">Ganti Bingkai</span>
+                    </div>
+                  </div>
+                </div>
+                <input type="file" id="frame-file-input" accept="image/png,image/jpeg,image/webp" class="hidden" onchange="handleFrameFileSelect(this)">
+              </div>
+
+              <!-- ================= LIVE PREVIEW & ADJUSTER STUDIO BOX ================= -->
+              <div class="creator-adjust-box hidden" id="creator-adjust-box">
+                <!-- Mockup Switcher Tabs -->
+                <div class="mockup-tabs-bar">
+                  <button type="button" class="mockup-tab-btn active" id="mockup-tab-square" onclick="switchMockupView('square')">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="mockup-btn-icon"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect></svg>
+                    <span>Feed IG / Persegi (1:1)</span>
+                  </button>
+                  <button type="button" class="mockup-tab-btn" id="mockup-tab-story" onclick="switchMockupView('story')">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="mockup-btn-icon"><rect x="5" y="2" width="14" height="20" rx="3" ry="3"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>
+                    <span>Story / Status (9:16)</span>
+                  </button>
+                </div>
+
+                <!-- Live Canvas Display Container -->
+                <div class="creator-stage-wrapper" id="creator-stage-wrapper">
+                  <!-- The Stage Canvas Card -->
+                  <div class="creator-canvas-card" id="creator-canvas-card">
+                    <!-- Phone status bar when in Story mode -->
+                    <div class="story-overlay-header hidden" id="story-overlay-header">
+                      <div class="story-progress-line"><div class="story-progress-val"></div></div>
+                      <div class="story-meta-row">
+                        <span class="story-dot-avatar"></span>
+                        <span class="story-handle-text" id="story-handle-preview">@fthstudio</span>
+                        <span class="story-time-text">Baru saja</span>
+                      </div>
+                    </div>
+
+                    <canvas id="creator-preview-canvas" width="600" height="600"></canvas>
+                    <div class="canvas-checkerboard-bg"></div>
+                    <div class="preview-mode-tag" id="preview-mode-tag">Pratinjau Live 1:1</div>
+                  </div>
+                </div>
+
+                <!-- Tester Supporter Photo Selector -->
+                <div class="creator-tester-selector">
+                  <span class="tester-caption">Uji Foto Wajah Pendukung:</span>
+                  <div class="tester-pills-row">
+                    <button type="button" class="tester-pill active" onclick="setCreatorTesterPhoto('assets/user_santri.jpg', this)">Santri</button>
+                    <button type="button" class="tester-pill" onclick="setCreatorTesterPhoto('assets/user_santriwati.jpg', this)">Santriwati</button>
+                    <button type="button" class="tester-pill" onclick="setCreatorTesterPhoto('assets/user_sains.jpg', this)">Pelajar</button>
+                    <button type="button" class="tester-pill" onclick="setCreatorTesterPhoto('assets/user_alumni.jpg', this)">Formal</button>
+                    <label class="tester-pill tester-upload-btn" title="Unggah foto Anda sendiri untuk pengujian">
+                      <span>+ Foto Uji</span>
+                      <input type="file" id="tester-custom-input" accept="image/*" class="hidden" onchange="handleCreatorCustomTesterPhoto(this)">
+                    </label>
+                  </div>
+                </div>
+
+                <!-- Quick Adjustments Bar -->
+                <div class="creator-controls-strip">
+                  <!-- Scale / Zoom Adjustment -->
+                  <div class="control-row-item">
+                    <div class="control-label-row">
+                      <span class="control-title">Ukuran / Skala Bingkai:</span>
+                      <span class="control-val-pill" id="creator-scale-val">100%</span>
+                    </div>
+                    <div class="slider-with-quick-btns">
+                      <button type="button" class="btn-step-zoom" onclick="stepCreatorScale(-5)" title="Perkecil">−</button>
+                      <input type="range" id="creator-scale-slider" min="60" max="140" value="100" step="1" oninput="updateCreatorFrameScale(this.value)">
+                      <button type="button" class="btn-step-zoom" onclick="stepCreatorScale(5)" title="Perbesar">+</button>
+                      <button type="button" class="btn-reset-adjust" onclick="resetCreatorAdjustments()" title="Kembalikan ke Normal">Reset</button>
+                    </div>
+                  </div>
+
+                  <!-- Cutout Lubang Foto Selector -->
+                  <div class="control-row-item">
+                    <span class="control-title">Bentuk Lubang Foto:</span>
+                    <div class="cutout-shape-group">
+                      <button type="button" class="cutout-shape-pill active" data-shape="auto" onclick="setCreatorCutoutShape('auto')">
+                        <span>Otomatis (PNG Asli)</span>
+                      </button>
+                      <button type="button" class="cutout-shape-pill" data-shape="circle" onclick="setCreatorCutoutShape('circle')">
+                        <span>Lingkaran</span>
+                      </button>
+                      <button type="button" class="cutout-shape-pill" data-shape="rounded" onclick="setCreatorCutoutShape('rounded')">
+                        <span>Persegi Bundar</span>
+                      </button>
+                      <button type="button" class="cutout-shape-pill" data-shape="rect" onclick="setCreatorCutoutShape('rect')">
+                        <span>Kotak Penuh</span>
+                      </button>
+                    </div>
+                  </div>
+
+                  <!-- Live Specs & Optimization Status Badges -->
+                  <div class="creator-specs-row" id="creator-specs-row">
+                    <span class="spec-badge" id="spec-dim-badge">📐 1080×1080 HD</span>
+                    <span class="spec-badge valid" id="spec-trans-badge">✓ Transparan Valid</span>
+                    <span class="spec-badge" id="spec-size-badge">⚡ Siap Medsos</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- ================= KOLOM KANAN: METADATA FORM & PUBLISH ================= -->
+            <div class="creator-studio-col-right">
+              <!-- Campaign Title -->
+              <div class="form-group form-group-compact">
+                <label for="new-campaign-title" class="form-label">Judul Kampanye *</label>
+                <input type="text" id="new-campaign-title" class="form-input" placeholder="Contoh: Milad Ke-50 Pesantren" required>
+              </div>
+
+              <!-- Custom Slug / Link -->
+              <div class="form-group form-group-compact">
+                <label for="new-campaign-slug" class="form-label">Custom Slug URL *</label>
+                <div class="input-prefix-box">
+                  <span class="input-prefix">fthstudio.id/?c=</span>
+                  <input type="text" id="new-campaign-slug" class="form-input input-with-prefix" placeholder="milad-50" pattern="[a-z0-9-]+" title="Hanya huruf kecil, angka, dan tanda minus (-)" required>
+                </div>
+              </div>
+
+              <!-- Row 2 Kolom: Kategori & Akun Organisasi -->
+              <div class="form-grid-2">
+                <div class="form-group form-group-compact">
+                  <label class="form-label">Kategori *</label>
+                  <div class="custom-select-container" id="category-select-wrapper">
+                    <button type="button" class="custom-select-trigger" id="cat-select-trigger" onclick="toggleCategoryDropdown(event)" aria-haspopup="listbox">
+                      <div class="select-selected-val">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="select-val-icon" id="cat-val-icon">
+                          <path d="M12 2a4 4 0 0 0-4 4v2H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V10a2 2 0 0 0-2-2h-4V6a4 4 0 0 0-4-4z"></path>
+                          <circle cx="12" cy="14" r="2.5"></circle>
+                        </svg>
+                        <span id="cat-val-label">Milad &amp; Pesantren</span>
+                      </div>
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" class="select-chevron-icon" id="cat-chevron">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                      </svg>
+                    </button>
+
+                    <div class="custom-select-options hidden" id="cat-options-menu" role="listbox">
+                      <div class="select-option-item selected" data-value="pesantren" onclick="chooseCategoryOption('pesantren', 'Milad &amp; Pesantren', this)">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="option-icon">
+                          <path d="M12 2a4 4 0 0 0-4 4v2H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V10a2 2 0 0 0-2-2h-4V6a4 4 0 0 0-4-4z"></path>
+                          <circle cx="12" cy="14" r="2.5"></circle>
+                        </svg>
+                        <span>Milad &amp; Pesantren</span>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="option-check-icon"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                      </div>
+
+                      <div class="select-option-item" data-value="nasional" onclick="chooseCategoryOption('nasional', 'Hari Besar Nasional', this)">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="option-icon">
+                          <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"></path>
+                          <line x1="4" y1="22" x2="4" y2="15"></line>
+                        </svg>
+                        <span>Hari Besar Nasional</span>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="option-check-icon"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                      </div>
+
+                      <div class="select-option-item" data-value="pendidikan" onclick="chooseCategoryOption('pendidikan', 'Pendidikan &amp; Wisuda', this)">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="option-icon">
+                          <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
+                          <path d="M6 12v5c0 2 3 3 6 3s6-1 6-3v-5"></path>
+                        </svg>
+                        <span>Pendidikan &amp; Wisuda</span>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="option-check-icon"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                      </div>
+
+                      <div class="select-option-item" data-value="organisasi" onclick="chooseCategoryOption('organisasi', 'Organisasi &amp; Komunitas', this)">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="option-icon">
+                          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                          <circle cx="9" cy="7" r="4"></circle>
+                          <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                          <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                        </svg>
+                        <span>Organisasi &amp; Komunitas</span>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="option-check-icon"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                      </div>
+
+                      <div class="select-option-item" data-value="lomba" onclick="chooseCategoryOption('lomba', 'Olimpiade &amp; Lomba', this)">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="option-icon">
+                          <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path>
+                          <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path>
+                          <path d="M4 22h16"></path>
+                          <path d="M10 14.66V17c0 .55-.45 1-1 1H8c-.55 0-1 .45-1 1v1c0 .55.45 1 1 1h8c.55 0 1-.45 1-1v-1c0-.55-.45-1-1-1h-1c-.55 0-1-.45-1-1v-2.34"></path>
+                          <path d="M18 4H6v5a6 6 0 0 0 12 0V4z"></path>
+                        </svg>
+                        <span>Olimpiade &amp; Lomba</span>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="option-check-icon"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                      </div>
+                    </div>
+
+                    <input type="hidden" id="new-campaign-cat" value="pesantren" required>
+                  </div>
+                </div>
+
+                <!-- Akun Penyelenggara -->
+                <div class="form-group form-group-compact">
+                  <label for="new-campaign-account" class="form-label">Akun Organisasi *</label>
+                  <select id="new-campaign-account" class="form-select" onchange="handleAccountSelectInForm(this.value)">
+                    <!-- Populated dynamically -->
+                  </select>
+                </div>
+              </div>
+
+              <!-- Row 2 Kolom: Nama Penyelenggara & Tagar Kampanye -->
+              <div class="form-grid-2">
+                <div class="form-group form-group-compact">
+                  <label for="new-campaign-creator" class="form-label">Nama Penyelenggara *</label>
+                  <input type="text" id="new-campaign-creator" class="form-input" placeholder="Panitia / Brand" required>
+                </div>
+
+                <div class="form-group form-group-compact">
+                  <label for="new-campaign-tags" class="form-label">Tagar (#)</label>
+                  <input type="text" id="new-campaign-tags" class="form-input" placeholder="#Milad50, #Santri">
+                </div>
+              </div>
+
+              <!-- Deskripsi & Pesan Kampanye -->
+              <div class="form-group form-group-compact">
+                <label for="new-campaign-desc" class="form-label">Deskripsi / Ajakan</label>
+                <input type="text" id="new-campaign-desc" class="form-input" placeholder="Pesan ajakan untuk para pendukung (opsional)...">
+              </div>
+
+              <!-- Submit Button Actions -->
+              <div class="form-actions compact-form-actions">
+                <button type="button" class="btn-cancel" onclick="closeCreateModal()">Batal</button>
+                <button type="submit" class="btn-submit-campaign" id="btn-submit-campaign">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" class="btn-submit-svg">
+                    <line x1="22" y1="2" x2="11" y2="13"></line>
+                    <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                  </svg>
+                  <span>Terbitkan Kampanye</span>
+                </button>
+              </div>
+            </div>
+
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= MODAL: REMOVE BACKGROUND (AI SIMULATOR) ================= -->
+  <div class="modal-overlay hidden" id="bg-remover-modal">
+    <div class="modal-card bg-remover-card">
+      <div class="modal-header">
+        <div>
+          <h3 class="modal-title">AI Background Remover</h3>
+          <span class="modal-subtitle">Hapus latar belakang foto potret secara instan di peramban</span>
+        </div>
+        <button class="modal-close-btn" onclick="closeBgRemoverModal()" aria-label="Tutup">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <div class="bg-tool-area">
+          <div class="dropzone-box" onclick="document.getElementById('bg-photo-input').click()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="dropzone-icon">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="17 8 12 3 7 8"></polyline>
+              <line x1="12" y1="3" x2="12" y2="15"></line>
+            </svg>
+            <p class="dropzone-text">Pilih foto portrait yang ingin dibersihkan background-nya</p>
+            <span class="dropzone-sub">Foto diproses 100% lokal di browser Anda</span>
+          </div>
+          <input type="file" id="bg-photo-input" accept="image/*" class="hidden" onchange="processBgRemoval(this)">
+
+          <div class="bg-preview-stage hidden" id="bg-preview-stage">
+            <div class="bg-preview-box">
+              <div class="canvas-checkerboard"></div>
+              <img id="bg-result-img" alt="Hasil Remove Background">
+            </div>
+            <div class="bg-preview-actions">
+              <button class="btn-use-in-twibbon" onclick="useCutoutInEditor()">
+                <span>Gunakan di Twibbon Sekarang</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= MODAL: TELUSURI / SEARCH MODAL ================= -->
+  <div class="modal-overlay hidden" id="explore-modal">
+    <div class="modal-card explore-modal-card">
+      <div class="modal-header">
+        <div class="search-input-modal-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="modal-search-icon">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input type="text" id="modal-search-field" placeholder="Ketik nama kampanye atau organisasi..." autofocus>
+        </div>
+        <button class="modal-close-btn" onclick="closeExploreModal()" aria-label="Tutup">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+
+      <div class="modal-body explore-modal-body">
+        <h4 class="explore-category-title">Pencarian Populer</h4>
+        <div class="quick-tags-row">
+          <button class="quick-tag" onclick="searchTag('Milad')">#MiladPesantren</button>
+          <button class="quick-tag" onclick="searchTag('Hari Santri')">#HariSantri</button>
+          <button class="quick-tag" onclick="searchTag('Olimpiade')">#OlimpiadeSains</button>
+          <button class="quick-tag" onclick="searchTag('Wisuda')">#Wisuda2026</button>
+          <button class="quick-tag" onclick="searchTag('Reuni')">#ReuniAkbar</button>
+        </div>
+
+        <div class="explore-results-list" id="explore-results-list">
+          <!-- Dynamic results populated on keyup -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= POPUP MENU GRID ================= -->
+  <div class="menu-dropdown-popup hidden" id="menu-popup">
+    <div class="menu-item-grid">
+      <a href="#" class="menu-grid-tile" onclick="openCreateModal(); toggleMenuPopup();">
+        <span class="tile-icon-svg">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+            <circle cx="8.5" cy="8.5" r="1.5"></circle>
+            <polyline points="21 15 16 10 5 21"></polyline>
+          </svg>
+        </span>
+        <span class="tile-title">Buat Twibbon</span>
+        <span class="tile-desc">Upload frame baru</span>
+      </a>
+      <a href="#" class="menu-grid-tile" onclick="openBgRemoverModal(); toggleMenuPopup();">
+        <span class="tile-icon-svg">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="6" cy="6" r="3"></circle>
+            <circle cx="6" cy="18" r="3"></circle>
+            <line x1="20" y1="4" x2="8.12" y2="15.88"></line>
+            <line x1="14.47" y1="14.48" x2="20" y2="20"></line>
+            <line x1="8.12" y1="8.12" x2="12" y2="12"></line>
+          </svg>
+        </span>
+        <span class="tile-title">Remove BG</span>
+        <span class="tile-desc">Potong latar foto</span>
+      </a>
+      <a href="admin.html" class="menu-grid-tile">
+        <span class="tile-icon-svg">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="20" x2="18" y2="10"></line>
+            <line x1="12" y1="20" x2="12" y2="4"></line>
+            <line x1="6" y1="20" x2="6" y2="14"></line>
+          </svg>
+        </span>
+        <span class="tile-title">Dashboard</span>
+        <span class="tile-desc">Statistik admin</span>
+      </a>
+      <a href="#" class="menu-grid-tile" onclick="scrollToCampaigns(); toggleMenuPopup();">
+        <span class="tile-icon-svg">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
+            <polyline points="17 6 23 6 23 12"></polyline>
+          </svg>
+        </span>
+        <span class="tile-title">Trending</span>
+        <span class="tile-desc">Bingkai terpopuler</span>
+      </a>
+      <a href="https://wa.me/6285704332952?text=Halo%20Admin%20FTH%20Studio,%20saya%20butuh%20bantuan" target="_blank" rel="noopener" class="menu-grid-tile" onclick="toggleMenuPopup();">
+        <span class="tile-icon-svg" style="color: #22c55e;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+          </svg>
+        </span>
+        <span class="tile-title">WhatsApp CS</span>
+        <span class="tile-desc">0857-0433-2952</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- ================= MOBILE BOTTOM APP NAVIGATION BAR ================= -->
+  <nav class="mobile-bottom-nav" id="mobile-bottom-nav" aria-label="Navigasi Bawah">
+    <button class="mob-nav-item active" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+        <polyline points="9 22 9 12 15 12 15 22"></polyline>
+      </svg>
+      <span>Beranda</span>
+    </button>
+
+    <button class="mob-nav-item" onclick="openExploreModal()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="11" cy="11" r="8"></circle>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+      </svg>
+      <span>Cari</span>
+    </button>
+
+    <!-- Floating Center Create Button (Icon-Only, Precision Centered) -->
+    <button class="mob-nav-item mob-create-btn" onclick="openCreateModal()" title="Buat Twibbon" aria-label="Buat Twibbon">
+      <div class="mob-create-circle">
+        <span class="mob-create-plus">+</span>
+      </div>
+    </button>
+
+    <button class="mob-nav-item" onclick="openBgRemoverModal()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="6" cy="6" r="3"></circle>
+        <circle cx="6" cy="18" r="3"></circle>
+        <line x1="20" y1="4" x2="8.12" y2="15.88"></line>
+        <line x1="14.47" y1="14.48" x2="20" y2="20"></line>
+        <line x1="8.12" y1="8.12" x2="12" y2="12"></line>
+      </svg>
+      <span>Hapus BG</span>
+    </button>
+
+    <button class="mob-nav-item" onclick="handleNavAccountClick()" title="Profil &amp; Akun Kreator">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+        <circle cx="12" cy="7" r="4"></circle>
+      </svg>
+      <span>Akun</span>
+    </button>
+  </nav>
+
+  <!-- ================= MODAL: SIGN IN / REGISTER (INSPIRASI MODERN REFERENCE) ================= -->
+  <div class="modal-overlay hidden" id="auth-modal">
+    <div class="modal-card auth-modal-card auth-ref-card">
+      
+      <!-- Top Close Button -->
+      <button class="auth-ref-close-btn" onclick="closeAuthModal()" aria-label="Tutup" title="Tutup">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+
+      <!-- Centered Header matching reference -->
+      <div class="auth-ref-header">
+        <h2 class="auth-ref-title" id="auth-modal-title">Create an account</h2>
+        <p class="auth-ref-subtitle" id="auth-modal-subtitle-wrap">
+          <span id="auth-modal-subtitle-text">Already have an account?</span>
+          <button type="button" class="auth-ref-switch-link" id="auth-header-switch-btn" onclick="toggleAuthMode()">Log in</button>
+        </p>
+      </div>
+
+      <!-- Segmented Pill Switcher (Login / Register) with vibrant lime active state -->
+      <div class="auth-ref-switcher-pill">
+        <button type="button" class="auth-ref-tab-btn" id="tab-auth-login" onclick="switchAuthTab('login')">
+          Login
+        </button>
+        <button type="button" class="auth-ref-tab-btn active" id="tab-auth-register" onclick="switchAuthTab('register')">
+          Register
+        </button>
+      </div>
+
+      <!-- TAB 1: REGISTER FORM -->
+      <div class="auth-tab-pane" id="pane-auth-register">
+        <form id="form-auth-register" onsubmit="handleAuthRegister(event)">
+          <div class="auth-ref-field">
+            <label class="auth-ref-label" for="reg-name-input">Full Name</label>
+            <input type="text" id="reg-name-input" class="auth-ref-input" placeholder="Nama Lengkap / Instansi" required autocomplete="name">
+          </div>
+
+          <div class="auth-ref-field">
+            <label class="auth-ref-label" for="reg-phone-input">Email Address / WhatsApp</label>
+            <input type="tel" id="reg-phone-input" class="auth-ref-input" placeholder="08xxxxxxxxxx" required autocomplete="tel">
+          </div>
+
+          <div class="auth-ref-field-row">
+            <div class="auth-ref-field">
+              <label class="auth-ref-label" for="reg-handle-input">Username (@)</label>
+              <div class="auth-ref-input-prefix-box">
+                <span class="auth-ref-prefix">@</span>
+                <input type="text" id="reg-handle-input" class="auth-ref-input prefix-attached" placeholder="usernameanda" pattern="[a-zA-Z0-9_]+" required>
+              </div>
+            </div>
+
+            <div class="auth-ref-field">
+              <label class="auth-ref-label" for="reg-role-select">Kategori Akun</label>
+              <select id="reg-role-select" class="auth-ref-select">
+                <option value="Personal">Personal</option>
+                <option value="Pesantren">Pesantren</option>
+                <option value="Sekolah">Sekolah / Kampus</option>
+                <option value="Organisasi">Organisasi</option>
+                <option value="Komunitas">Komunitas</option>
+              </select>
+            </div>
+          </div>
+
+          <button type="submit" class="auth-ref-submit-btn" id="btn-auth-submit">
+            Register
+          </button>
+        </form>
+      </div>
+
+      <!-- TAB 2: LOGIN FORM -->
+      <div class="auth-tab-pane hidden" id="pane-auth-login">
+        <form id="form-auth-login-direct" onsubmit="handleDirectLogin(event)">
+          <div class="auth-ref-field">
+            <label class="auth-ref-label" for="login-identifier-input">Username (@) / No. WhatsApp</label>
+            <input type="text" id="login-identifier-input" class="auth-ref-input" placeholder="Contoh: @panitiamilad atau 0812..." required autocomplete="username">
+          </div>
+
+          <div class="auth-ref-field">
+            <label class="auth-ref-label" for="login-pin-input">Password / Akses PIN</label>
+            <div class="auth-ref-password-box">
+              <input type="password" id="login-pin-input" class="auth-ref-input password-attached" placeholder="••••••••••••" autocomplete="current-password">
+              <button type="button" class="auth-ref-eye-btn" onclick="togglePasswordVisibility()" aria-label="Lihat password">
+                <svg id="eye-icon-show" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                  <circle cx="12" cy="12" r="3"></circle>
+                </svg>
+                <svg id="eye-icon-hide" class="hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                  <line x1="1" y1="1" x2="23" y2="23"></line>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- Remember me & Quick Select row matching reference -->
+          <div class="auth-ref-options-row">
+            <label class="auth-ref-checkbox-label">
+              <input type="checkbox" id="auth-remember-me" checked>
+              <span>Remember Me</span>
+            </label>
+            <button type="button" class="auth-ref-link-btn" onclick="toggleSavedAccountsDropdown()">
+              Pilih Akun Tersimpan
+            </button>
+          </div>
+
+          <button type="submit" class="auth-ref-submit-btn btn-login-direct" id="btn-login-direct-submit">
+            Login
+          </button>
+        </form>
+
+        <!-- Saved accounts collapsible drawer -->
+        <div class="auth-accounts-drawer hidden" id="auth-accounts-drawer">
+          <div class="auth-accounts-drawer-header">
+            <span>Akun di perangkat ini:</span>
+          </div>
+          <div class="auth-accounts-list" id="auth-accounts-list">
+            <!-- Rendered dynamically via JS -->
+          </div>
+        </div>
+      </div>
+
+      <!-- "Or continue with" Divider matching reference -->
+      <div class="auth-ref-divider">
+        <span>Or continue with</span>
+      </div>
+
+      <!-- Social / Quick login buttons row matching reference -->
+      <div class="auth-ref-social-row">
+        <button type="button" class="auth-ref-social-btn" onclick="handleSocialAuthClick('google')">
+          <svg viewBox="0 0 24 24" class="social-icon">
+            <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+            <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+            <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" fill="#FBBC05"/>
+            <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" fill="#EA4335"/>
+          </svg>
+          <span>Google</span>
+        </button>
+
+        <button type="button" class="auth-ref-social-btn" onclick="toggleSavedAccountsDropdown()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="social-icon">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
+          </svg>
+          <span>Tersimpan</span>
+        </button>
+      </div>
+
+      <!-- Bottom switch text matching reference -->
+      <div class="auth-ref-footer">
+        <span id="auth-ref-footer-text">Don't have an account? <button type="button" class="auth-ref-footer-btn" onclick="switchAuthTab('register')">Sign up</button></span>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ================= MODAL: AKUN KREATOR & ORGANISASI ================= -->
+  <div class="modal-overlay hidden" id="account-modal">
+    <div class="modal-card account-modal-card">
+      <div class="modal-header">
+        <div class="modal-header-left">
+          <h3 class="modal-title">Akun &amp; Profil Kreator</h3>
+          <span class="modal-subtitle">Kelola dan pisahkan kampanye agar tidak tercampur</span>
+        </div>
+        <button class="modal-close-btn" onclick="closeAccountModal()" aria-label="Tutup">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+
+      <div class="modal-body account-modal-body">
+        <!-- Active Account Spotlight Card -->
+        <div class="active-account-spotlight" id="active-account-spotlight">
+          <div class="spotlight-avatar" id="spotlight-avatar" style="background-color: #15803d;">PM</div>
+          <div class="spotlight-info">
+            <div class="spotlight-name-row">
+              <h4 class="spotlight-name" id="spotlight-name">Panitia Milad &amp; Pesantren</h4>
+              <span class="verified-badge-mini" id="spotlight-verified-badge" title="Akun Terverifikasi">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              </span>
+            </div>
+            <span class="spotlight-handle" id="spotlight-handle">@panitiamilad</span>
+            <p class="spotlight-bio" id="spotlight-bio">Penyelenggara resmi Milad Santri Nasional &amp; Kegiatan Pesantren Indonesia.</p>
+          </div>
+          <div class="spotlight-actions-row">
+            <button class="btn-view-my-campaigns" onclick="filterByMyCampaigns(); closeAccountModal();">
+              <span>Lihat Kampanye Saya</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </button>
+            <a href="admin.html" class="btn-view-my-campaigns hidden" id="btn-admin-portal-shortcut" style="background: rgba(15, 118, 110, 0.12); color: #0f766e; border: 1px solid rgba(15, 118, 110, 0.35);">
+              <span>⚙️ Panel Admin</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"></polyline></svg>
+            </a>
+            <button class="btn-logout-account" onclick="handleLogoutUser()" title="Keluar dari akun">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+              <span>Keluar</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Section: Ganti Akun / Pilih Profil Lain -->
+        <div class="account-list-section">
+          <div class="account-list-header">
+            <span class="section-badge-sm">Pilih Akun Penyelenggara:</span>
+            <button class="btn-toggle-add-account" onclick="toggleNewAccountForm()">+ Akun Baru</button>
+          </div>
+          <div class="accounts-grid" id="accounts-grid-list">
+            <!-- Rendered dynamically via app.js -->
+          </div>
+        </div>
+
+        <!-- Form: Tambah Akun Baru (Collapsible) -->
+        <div class="new-account-form-wrapper hidden" id="new-account-form-wrapper">
+          <h4 class="new-account-form-title">Buat Profil / Akun Baru</h4>
+          <form id="create-account-form" onsubmit="handleCreateNewAccount(event)">
+            <div class="form-group">
+              <label class="form-label" for="acc-name-input">Nama Penyelenggara / Organisasi *</label>
+              <input type="text" id="acc-name-input" class="form-input" placeholder="Contoh: BEM Fakultas Teknik" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="acc-handle-input">Username / Handle (@) *</label>
+              <div class="input-prefix-box">
+                <span class="input-prefix">@</span>
+                <input type="text" id="acc-handle-input" class="form-input input-with-prefix" placeholder="bemteknik" pattern="[a-zA-Z0-9_]+" required>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="acc-bio-input">Deskripsi Singkat</label>
+              <input type="text" id="acc-bio-input" class="form-input" placeholder="Organisasi mahasiswa / panitia kegiatan...">
+            </div>
+            <div class="form-actions">
+              <button type="button" class="btn-cancel" onclick="toggleNewAccountForm()">Batal</button>
+              <button type="submit" class="btn-submit-campaign">Simpan &amp; Gunakan Akun</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= MODAL: SUKSES UNDUH & BAGIKAN TWIBBON ================= -->
+  <div class="modal-overlay hidden" id="download-success-modal">
+    <div class="modal-card success-modal-card">
+      <div class="success-modal-header">
+        <div class="success-icon-badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+        </div>
+        <h3 class="success-modal-title">Twibbon Berhasil Diunduh!</h3>
+        <div class="success-badge-row">
+          <span class="fhd-pill">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="fhd-check-icon">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+            Resolusi FHD 1080p
+          </span>
+          <span class="fhd-subtext">Tersimpan di galeri perangkatmu</span>
+        </div>
+      </div>
+
+      <div class="success-modal-body">
+        <!-- Compact Preview & Caption Box -->
+        <div class="success-preview-card">
+          <div class="success-thumb-wrap">
+            <img id="success-twibbon-thumb" src="assets/user_santri.jpg" alt="Twibbon FHD" class="success-twibbon-thumb">
+            <span class="thumb-fhd-tag">FHD</span>
+          </div>
+          <div class="success-card-meta">
+            <div class="success-card-title-row">
+              <span class="success-card-title" id="success-caption-title">Caption &amp; Tagar</span>
+              <button type="button" class="btn-copy-caption-mini" onclick="copyCampaignCaptionAndTags()" title="Salin Teks">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                <span>Salin</span>
+              </button>
+            </div>
+            <p class="success-caption-text" id="success-caption-text">Mari semarakkan kampanye bersama!</p>
+            <div class="success-hashtags-row" id="success-hashtags-row"></div>
+          </div>
+        </div>
+
+        <!-- Primary Full-Width Action: Share FHD Image to WhatsApp / Medsos -->
+        <button type="button" class="btn-success-primary-share" onclick="shareTwibbonToNativeOrSocial('all')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" class="btn-icon">
+            <circle cx="18" cy="5" r="3"></circle>
+            <circle cx="6" cy="12" r="3"></circle>
+            <circle cx="18" cy="19" r="3"></circle>
+            <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+            <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+          </svg>
+          <span>Bagikan Foto FHD ke Medsos</span>
+        </button>
+
+        <!-- Social Media Fast Share Strip (WhatsApp, IG, Telegram, FB, X, Link) -->
+        <div class="success-social-label">Atau bagikan langsung ke:</div>
+        <div class="success-social-grid">
+          <button type="button" class="social-share-btn wa-btn" onclick="shareTwibbonToNativeOrSocial('whatsapp')" title="Bagikan ke WhatsApp">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2zm5.78 14.07c-.24.68-1.4 1.28-1.95 1.36-.51.08-1.15.11-3.32-.78-2.61-1.07-4.28-3.73-4.41-3.9-.13-.17-1.06-1.41-1.06-2.69 0-1.28.67-1.91.91-2.17.24-.26.52-.33.7-.33.17 0 .35 0 .5.01.16.01.37-.06.58.44.22.52.75 1.83.82 1.96.07.13.11.28.02.45-.09.17-.13.28-.26.43-.13.15-.28.33-.4.45-.13.13-.27.28-.12.54.15.26.68 1.12 1.46 1.81 1 .89 1.85 1.17 2.11 1.3.26.13.41.11.56-.06.15-.17.65-.76.83-1.02.17-.26.35-.22.58-.13.24.09 1.51.71 1.77.84.26.13.43.2.5.3.06.1.06.63-.18 1.31z"/>
+            </svg>
+            <span>WhatsApp</span>
+          </button>
+          
+          <button type="button" class="social-share-btn ig-btn" onclick="shareTwibbonToNativeOrSocial('instagram')" title="Salin &amp; Buka Instagram">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+            </svg>
+            <span>Instagram</span>
+          </button>
+
+          <button type="button" class="social-share-btn tg-btn" onclick="shareTwibbonToNativeOrSocial('telegram')" title="Bagikan ke Telegram">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 0 0-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.52 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .36z"/>
+            </svg>
+            <span>Telegram</span>
+          </button>
+
+          <button type="button" class="social-share-btn fb-btn" onclick="shareTwibbonToNativeOrSocial('facebook')" title="Bagikan ke Facebook">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+            </svg>
+            <span>Facebook</span>
+          </button>
+
+          <button type="button" class="social-share-btn x-btn" onclick="shareTwibbonToNativeOrSocial('twitter')" title="Bagikan ke X / Twitter">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+            </svg>
+            <span>X / Tweet</span>
+          </button>
+
+          <button type="button" class="social-share-btn link-btn" onclick="copyCurrentCampaignLink()" title="Salin Tautan Kampanye">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+              <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+              <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+            </svg>
+            <span>Salin Link</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="success-modal-footer">
+        <button type="button" class="btn-success-done" onclick="closeDownloadSuccessModal()">
+          Selesai &amp; Tutup
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= MODAL: GOOGLE SIGN-IN RESMI (MULTI-USER / PUBLIK) ================= -->
+  <div class="modal-overlay hidden" id="google-auth-modal">
+    <div class="modal-card google-modal-card">
+      <!-- Google Animated Progress Bar -->
+      <div class="google-progress-bar hidden" id="google-progress-bar">
+        <div class="google-progress-line"></div>
+      </div>
+
+      <div class="google-modal-top">
+        <!-- Google Logo Official Multi-color Centered -->
+        <div class="google-logo-wrapper">
+          <svg viewBox="0 0 24 24" class="google-logo-svg">
+            <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+            <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+            <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" fill="#FBBC05"/>
+            <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" fill="#EA4335"/>
+          </svg>
+        </div>
+        <button type="button" class="google-modal-close-btn" onclick="closeGoogleAuthModal()" aria-label="Tutup" title="Tutup">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+      </div>
+
+      <div class="google-modal-header">
+        <h3 class="google-modal-title">Pilih Akun Google</h3>
+        <p class="google-modal-subtitle">untuk melanjutkan ke <strong>FTH Twibbon Studio</strong></p>
+      </div>
+
+      <div class="google-modal-body">
+        <!-- List of Google accounts ready for 1-click login -->
+        <div class="google-accounts-picker" id="google-accounts-picker">
+          <!-- Populated by JS -->
+        </div>
+
+        <!-- Main One-Click Google Action Button -->
+        <button type="button" class="btn-google-continue" id="btn-google-continue" onclick="handleGoogleAuthSubmit(event)">
+          <div class="google-btn-icon-wrap">
+            <svg viewBox="0 0 24 24" class="google-btn-icon">
+              <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+              <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+              <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" fill="#FBBC05"/>
+              <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" fill="#EA4335"/>
+            </svg>
+          </div>
+          <span id="btn-google-continue-text">Lanjutkan sebagai Akun Google</span>
+        </button>
+
+        <!-- Toggle custom account form link -->
+        <div class="google-custom-toggle-wrap">
+          <button type="button" class="btn-toggle-custom-google" onclick="toggleCustomGoogleInput()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
+            <span id="toggle-custom-google-text">Gunakan akun Google lain</span>
+          </button>
+        </div>
+
+        <!-- Optional Custom Google Account Form -->
+        <div class="google-new-account-box hidden" id="google-new-account-box">
+          <div class="google-field">
+            <label for="google-name-input">Nama Tampilan</label>
+            <input type="text" id="google-name-input" class="google-input" placeholder="Nama Anda (Opsional)" autocomplete="name">
+          </div>
+          <div class="google-field">
+            <label for="google-email-input">Alamat Email (@gmail.com)</label>
+            <input type="email" id="google-email-input" class="google-input" placeholder="nama.anda@gmail.com" autocomplete="email">
+          </div>
+        </div>
+
+      </div>
+
+      <div class="google-modal-footer">
+        <span class="google-terms-note">Google akan membagikan nama dan email Anda ke FTH Twibbon Studio untuk melanjutkan.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= TOAST NOTIFICATION CONTAINER ================= -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- Scripts -->
+  <script src="app.js"></script>
+</body>
+</html>
