@@ -1667,10 +1667,30 @@
         </p>
       </div>
 
+      <!-- Email Notification & OTP Status Banner -->
+      <div class="forgot-email-status-box hidden" id="forgot-email-status-box">
+        <span class="forgot-email-status-icon">📧</span>
+        <div class="forgot-email-status-text">
+          <strong id="forgot-email-status-title">Peringatan Keamanan Terkirim</strong>
+          <span id="forgot-email-status-desc">Kode OTP pemulihan 6-digit telah dikirim ke email terdaftar Anda.</span>
+        </div>
+      </div>
+
       <form id="form-forgot-password" onsubmit="handleForgotPasswordSubmit(event)">
         <div class="auth-ref-field">
           <label class="auth-ref-label" for="forgot-identifier-input">Username (@) / No. WhatsApp / Email Terdaftar</label>
-          <input type="text" id="forgot-identifier-input" class="auth-ref-input" placeholder="Contoh: @panitiamilad atau 0812..." required autocomplete="username">
+          <input type="text" id="forgot-identifier-input" class="auth-ref-input" placeholder="Contoh: @panitiamilad atau 0812..." required autocomplete="username" onchange="handleForgotIdentifierChange()">
+        </div>
+
+        <!-- Dynamic OTP Verification Field -->
+        <div class="auth-ref-field hidden" id="forgot-otp-field">
+          <div class="auth-field-header-row">
+            <label class="auth-ref-label" for="forgot-otp-input">Kode OTP Verifikasi Email (6 Digit) *</label>
+            <button type="button" class="auth-forgot-link" id="btn-resend-otp" onclick="resendOtpEmail()">Kirim Ulang</button>
+          </div>
+          <div class="auth-ref-password-box">
+            <input type="text" id="forgot-otp-input" class="auth-ref-input" placeholder="6 digit angka dari email (misal: 742918)" maxlength="6" pattern="[0-9]{6}">
+          </div>
         </div>
 
         <div class="auth-ref-field">

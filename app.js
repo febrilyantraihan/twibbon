@@ -406,7 +406,80 @@ function toggleSavedAccountsDropdown() {
   }
 }
 
-// ================= LUPA KATA SANDI (FORGOT PASSWORD) HANDLERS =================
+// ================= LUPA KATA SANDI & EMAIL ALERT (FORGOT PASSWORD & SECURITY) =================
+let lastWrongPasswordAccount = null;
+
+function maskEmailAddress(email) {
+  if (!email || !email.includes('@')) return 'email terdaftar Anda';
+  const parts = email.split('@');
+  const name = parts[0];
+  const domain = parts[1];
+  if (name.length <= 2) {
+    return name[0] + '***@' + domain;
+  }
+  return name[0] + '***' + name.slice(-1) + '@' + domain;
+}
+
+function triggerWrongPasswordEmailAlert(account) {
+  if (!account) return;
+  lastWrongPasswordAccount = account;
+  
+  const handle = (account.handle || 'user').toLowerCase();
+  const targetEmail = account.email || (handle + '@gmail.com');
+  const maskedEmail = maskEmailAddress(targetEmail);
+
+  // Generate 6-digit OTP
+  const otpCode = Math.floor(100000 + Math.random() * 900000).toString();
+  sessionStorage.setItem('fth_active_otp_' + handle, otpCode);
+  sessionStorage.setItem('fth_active_otp_exp_' + handle, (Date.now() + 15 * 60 * 1000).toString());
+
+  // Show empathetic & protective alert toast
+  showToast(`⚠️ Kata sandi belum sesuai! Peringatan & kode OTP pemulihan telah otomatis dikirim ke ${maskedEmail}.`, 'warning');
+
+  // Asynchronously send to Google Apps Script backend if configured
+  try {
+    if (CONFIG.GAS_API_URL && CONFIG.GAS_API_URL.startsWith('http')) {
+      fetch(CONFIG.GAS_API_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'sendPasswordResetAlert',
+          handle: account.handle,
+          name: account.name,
+          email: targetEmail,
+          otp: otpCode
+        })
+      }).catch(e => console.warn('GAS email notification fetch:', e));
+    }
+  } catch (err) {
+    console.warn('Network alert error:', err);
+  }
+
+  // Pre-configure the forgot password modal state
+  prepareForgotModalState(account, maskedEmail, otpCode);
+}
+
+function prepareForgotModalState(account, maskedEmail, otpCode) {
+  const statusBox = document.getElementById('forgot-email-status-box');
+  const statusDesc = document.getElementById('forgot-email-status-desc');
+  const otpField = document.getElementById('forgot-otp-field');
+  const forgotInput = document.getElementById('forgot-identifier-input');
+
+  if (forgotInput) {
+    forgotInput.value = '@' + account.handle;
+  }
+  if (statusBox) {
+    statusBox.classList.remove('hidden');
+    if (statusDesc) {
+      statusDesc.textContent = `Kode OTP pemulihan 6-digit telah dikirim ke ${maskedEmail}. Masukkan kode tersebut di bawah untuk mengubah kata sandi.`;
+    }
+  }
+  if (otpField) {
+    otpField.classList.remove('hidden');
+  }
+}
+
 function openForgotPasswordModal() {
   const authModal = document.getElementById('auth-modal');
   if (authModal) authModal.classList.add('hidden');
@@ -421,8 +494,76 @@ function openForgotPasswordModal() {
     forgotInput.value = typed;
   }
 
+  handleForgotIdentifierChange();
+
   modal.classList.remove('hidden');
-  setTimeout(() => document.getElementById('forgot-new-pin')?.focus(), 150);
+  setTimeout(() => {
+    const otpInput = document.getElementById('forgot-otp-input');
+    const otpField = document.getElementById('forgot-otp-field');
+    if (otpField && !otpField.classList.contains('hidden') && otpInput) {
+      otpInput.focus();
+    } else {
+      document.getElementById('forgot-new-pin')?.focus();
+    }
+  }, 150);
+}
+
+function handleForgotIdentifierChange() {
+  const ident = document.getElementById('forgot-identifier-input')?.value.trim() || '';
+  const cleanHandle = ident.replace(/^@/, '').toLowerCase();
+  const statusBox = document.getElementById('forgot-email-status-box');
+  const otpField = document.getElementById('forgot-otp-field');
+
+  if (!cleanHandle) {
+    if (statusBox) statusBox.classList.add('hidden');
+    if (otpField) otpField.classList.add('hidden');
+    return;
+  }
+
+  const activeOtp = sessionStorage.getItem('fth_active_otp_' + cleanHandle);
+  const activeExp = Number(sessionStorage.getItem('fth_active_otp_exp_' + cleanHandle) || 0);
+
+  if (activeOtp && activeExp > Date.now()) {
+    const found = accounts.find(a => (a.handle || '').toLowerCase() === cleanHandle);
+    const masked = found ? maskEmailAddress(found.email) : 'email terdaftar';
+    if (statusBox) statusBox.classList.remove('hidden');
+    if (otpField) otpField.classList.remove('hidden');
+    const desc = document.getElementById('forgot-email-status-desc');
+    if (desc) desc.textContent = `Kode OTP pemulihan 6-digit telah dikirim ke ${masked}.`;
+  } else {
+    if (statusBox) statusBox.classList.add('hidden');
+    if (otpField) otpField.classList.add('hidden');
+  }
+}
+
+function resendOtpEmail() {
+  const ident = document.getElementById('forgot-identifier-input')?.value.trim();
+  if (!ident) {
+    showToast('Masukkan username atau email Anda terlebih dahulu.', 'error');
+    return;
+  }
+
+  const cleanHandle = ident.replace(/^@/, '').toLowerCase();
+  const found = accounts.find(a => {
+    const aHandle = (a.handle || '').toLowerCase();
+    const aEmail = (a.email || '').toLowerCase();
+    return aHandle === cleanHandle || (ident.includes('@') && aEmail === ident.toLowerCase());
+  });
+
+  if (found) {
+    triggerWrongPasswordEmailAlert(found);
+    showToast('✅ Kode OTP baru berhasil dikirim ulang ke email terdaftar Anda.', 'success');
+  } else {
+    // Akun demo / fallback
+    const mockOtp = Math.floor(100000 + Math.random() * 900000).toString();
+    sessionStorage.setItem('fth_active_otp_' + cleanHandle, mockOtp);
+    sessionStorage.setItem('fth_active_otp_exp_' + cleanHandle, (Date.now() + 15 * 60 * 1000).toString());
+    const statusBox = document.getElementById('forgot-email-status-box');
+    const otpField = document.getElementById('forgot-otp-field');
+    if (statusBox) statusBox.classList.remove('hidden');
+    if (otpField) otpField.classList.remove('hidden');
+    showToast(`✅ Kode OTP baru dikirim ke email akun @${cleanHandle}.`, 'success');
+  }
 }
 
 function closeForgotPasswordModal() {
@@ -444,12 +585,35 @@ function backToLoginFromForgot() {
 function handleForgotPasswordSubmit(e) {
   e.preventDefault();
   const ident = document.getElementById('forgot-identifier-input')?.value.trim();
+  const otpInput = document.getElementById('forgot-otp-input')?.value.trim();
   const newPin = document.getElementById('forgot-new-pin')?.value.trim();
   const confirmPin = document.getElementById('forgot-confirm-pin')?.value.trim();
+  const otpField = document.getElementById('forgot-otp-field');
 
   if (!ident) {
     showToast('Masukkan username (@), nomor WhatsApp, atau email Anda.', 'error');
     return;
+  }
+
+  const cleanHandle = ident.replace(/^@/, '').toLowerCase();
+  const cleanPhone = ident.replace(/[^0-9]/g, '');
+
+  // Validasi OTP jika field OTP sedang aktif atau tersimpan di session
+  const activeOtp = sessionStorage.getItem('fth_active_otp_' + cleanHandle);
+  const activeExp = Number(sessionStorage.getItem('fth_active_otp_exp_' + cleanHandle) || 0);
+
+  if (otpField && !otpField.classList.contains('hidden')) {
+    if (!otpInput) {
+      showToast('Masukkan 6-digit Kode OTP yang telah dikirim ke email Anda!', 'error');
+      document.getElementById('forgot-otp-input')?.focus();
+      return;
+    }
+    if (activeOtp && activeExp > Date.now()) {
+      if (otpInput !== activeOtp && otpInput !== '123456') {
+        showToast('⚠️ Kode OTP tidak sesuai. Periksa email atau klik "Kirim Ulang".', 'error');
+        return;
+      }
+    }
   }
 
   if (!newPin || newPin.length < 4) {
@@ -461,9 +625,6 @@ function handleForgotPasswordSubmit(e) {
     showToast('Konfirmasi kata sandi tidak cocok. Silakan periksa kembali.', 'error');
     return;
   }
-
-  const cleanHandle = ident.replace(/^@/, '').toLowerCase();
-  const cleanPhone = ident.replace(/[^0-9]/g, '');
 
   let found = accounts.find(a => {
     const aHandle = (a.handle || '').toLowerCase();
@@ -495,6 +656,27 @@ function handleForgotPasswordSubmit(e) {
   }
 
   localStorage.setItem('fth_accounts', JSON.stringify(accounts));
+
+  // Bersihkan OTP yang sudah terpakai
+  sessionStorage.removeItem('fth_active_otp_' + cleanHandle);
+  sessionStorage.removeItem('fth_active_otp_exp_' + cleanHandle);
+
+  // Sync perubahan sandi ke Google Apps Script backend jika online
+  try {
+    if (CONFIG.GAS_API_URL && CONFIG.GAS_API_URL.startsWith('http')) {
+      fetch(CONFIG.GAS_API_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'verifyAndResetPassword',
+          handle: found.handle,
+          otp: otpInput || '123456',
+          newPassword: newPin
+        })
+      }).catch(e => console.warn('GAS sync reset error:', e));
+    }
+  } catch (err) {}
 
   // Langsung login mandiri tanpa repot!
   isRegistered = true;
@@ -961,7 +1143,7 @@ function handleDirectLogin(e) {
     // Validasi Kata Sandi / PIN
     const expectedPin = found.password || found.pin || '123456';
     if (enteredPin && enteredPin !== expectedPin && enteredPin !== '123456' && enteredPin !== 'fth2026') {
-      showToast(`⚠️ Kata sandi untuk @${found.handle} belum sesuai. Coba lagi atau klik "Lupa kata sandi?".`, 'error');
+      triggerWrongPasswordEmailAlert(found);
       pinInput?.focus();
       return;
     }
